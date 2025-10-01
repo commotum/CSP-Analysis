@@ -1,3 +1,15 @@
+## Contents
+- [Where Output Lives](#where)
+- [Core Symbols](#symbols)
+- [Labels and Cells](#labels)
+- [Chain Line Anatomy](#chains)
+- [Other Prints](#other)
+- [Helpers Index](#helpers)
+- [Per‑Game Notation](#pergame)
+- [End‑to‑End Excerpts](#excerpts)
+- [See Also](#see)
+
+<a id="where"></a>
 **Notation And Output In CSP‑Rules**
 
 This guide explains how CSP‑Rules formats its console output when verbosity is high, and where the helper functions live. It also decodes the notation for pattern‑based reasoning lines (chains, whips, braids), which follow a single stream of reasoning per pattern.
@@ -12,6 +24,7 @@ This guide explains how CSP‑Rules formats its console output when verbosity is
   - Latin Squares pretty grid output: `CSP-Rules/CSP-Rules-V2.1/LatinRules-V2.1/GENERAL/pretty-print.clp:86`
   - Sudoku partial solution printing, summaries: `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/print-partial-sol.clp:34`, `.../record-results.clp:1`
 
+<a id="symbols"></a>
 **Core Symbols (Generic Defaults)**
 - Signs and separators (from `.../GENERAL/parameters.clp`)
   - Implication: `?*implication-sign*` → ` ==> ` `CSP-Rules-Generic/GENERAL/parameters.clp:41`
@@ -26,6 +39,7 @@ This guide explains how CSP‑Rules formats its console output when verbosity is
 
 Applications adjust these as needed (e.g., Slitherlink sets additional loop link symbols; Kakuro prints run/sector descriptors).
 
+<a id="labels"></a>
 **Label And Cell Printing (Sudoku example)**
 - Label formatting (one candidate):
   - Sudoku overrides `print-label` to print number+row+column short names: `5r2c9` `SudoRules-V20.1/GENERAL/nrc-output.clp:24`.
@@ -34,6 +48,7 @@ Applications adjust these as needed (e.g., Slitherlink sets additional loop link
 - Final cell in non‑reversible chains (whips/braids):
   - Printed with a dot for the missing last right‑linking candidate: `{val .}` `SudoRules-V20.1/GENERAL/nrc-output.clp:88`.
 
+<a id="chains"></a>
 **Chain/Whip/Braid Line Anatomy (Single Stream)**
 - Generic (reversible) chains (bivalue, g‑bivalue, oddagon):
   - `biv-chain[n]: <cell1> - <cell2> - ... ==> not <label>` `CSP-Rules-Generic/GENERAL/generic-output.clp:113`
@@ -51,6 +66,7 @@ Interpretation
 - Conclusion: ` ==> not <label>` for eliminations or ` ==> assert <label>` for assertions in forcing variants.
 - “Single stream of reasoning”: every printed line encodes one linear derivation with no OR branching inside the main stream; ORk families print side subpaths, but the pattern instance still yields one final elimination or assertion.
 
+<a id="other"></a>
 **Other Notable Prints**
 - Resolution state snapshots
   - After Singles (optional): banner + “Resolution state after Singles” with counts and density. Triggered in `play.clp` if `?*print-RS-after-Singles*` is TRUE.
@@ -61,6 +77,7 @@ Interpretation
 - Level/phase traces
   - When `?*print-levels*` is TRUE, rules announce entry into higher‑level families (e.g., “Entering_level_tridagon[12]”). These are family‑specific debug prints.
 
+<a id="helpers"></a>
 **Helper Functions Index (Generic)**
 - Print label/cell pairs: `print-label`, `print-bivalue-cell`, `print-final-cell` `CSP-Rules-Generic/GENERAL/generic-output.clp:30`, `:63`, `:280`
 - Print chain lines:
@@ -80,6 +97,7 @@ Interpretation
 - For typed chains you’ll see `-<type>[n]` in the header; the cells reflect the chosen type (e.g., `rn` shows a row and a number paired with a list of columns).
 - ORk lines show subpaths under the `||` bars; the last line still ends with a single `==>` conclusion.
 
+<a id="pergame"></a>
 **Per‑Game Notation**
 
 Sudoku (SudoRules)
@@ -161,6 +179,7 @@ General Reminders
 - Chain headers report the family and length: `whip[n]`, `biv-chain[n]`, `g-whip[n]`, `braid[n]`, typed variants as `biv-chain-<type>[n]`.
 - Steps are rendered as `{left right}` pairs in the CSP variable context (rc/rn/cn/bn or app type); links are ` - `, and the final implication is ` ==> not <label>` (or `==> assert <label>` for forcing variants). ORk variants may print `||` side branches but produce a single conclusion per pattern.
 
+<a id="excerpts"></a>
 **End‑to‑End Excerpts (from Examples)**
 
 Sudoku — Metcalf‑B7B (CSP-Rules-Examples/Sudoku-a/Metcalf-B7B.clp)
@@ -185,6 +204,7 @@ Futoshiki — 9x9‑Extreme‑SHT (CSP-Rules-Examples/Futoshiki/Tatham/9x9-Extre
 - `naked-single ==> r9c5 = 4`
   Plain English: Cell r9c5 is forced to 4 by previous eliminations.
 
+<a id="see"></a>
 **See Also**
 - Trigger: taxonomy of patterns that generate these lines — [Trigger](Trigger.md)
 - Model: how labels/cells are formed — [Model](Model.md)

@@ -1,3 +1,17 @@
+## Contents
+- [What T&E Is](#what)
+- [Flags & Entry Points](#flags)
+- [Data Structures](#data)
+- [TE Flow](#flow)
+- [DFS](#dfs)
+- [Forcing T&E](#forcing)
+- [Integrated Design](#integrated)
+- [Single Stream vs Search](#stream)
+- [Used vs Not Used](#used)
+- [Pointers](#pointers)
+- [See Also](#see)
+
+<a id="what"></a>
 **Trial & Error (T&E) and DFS in CSP‑Rules**
 
 This notes how T&E works in CSP‑Rules: what it does, the data it uses, and how it stays integrated with the same rule engine (no separate solver).
@@ -6,6 +20,7 @@ This notes how T&E works in CSP‑Rules: what it does, the data it uses, and how
 - Hypothesize a candidate as true in a child “context”, run the normal rules, and see if that leads to a contradiction. If it does, the hypothesis is impossible, so the candidate is eliminated in the parent. If not, discard the temporary context and try the next hypothesis.
 - Depth 1 tries one hypothesis at a time; higher depths nest hypotheses. DFS is the same idea but pursues a search branch until a solution or contradiction.
 
+<a id="flags"></a>
 **Flags & Entry Points**
 - Toggles (generic):
   - `?*TE1*`, `?*TE2*`, `?*TE3*` — enable T&E at depth 1/2/3.
@@ -15,6 +30,7 @@ This notes how T&E works in CSP‑Rules: what it does, the data it uses, and how
   - Printing: `?*print-hypothesis*`, `?*print-phase*`, `?*print-actions*` (and more in `.../GENERAL/globals.clp:1801+`).
   Pointers: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/globals.clp:753`–`:775` (T&E/DFS) and `:1801+` (prints).
 
+<a id="data"></a>
 **Core Data Structures (Facts & Globals)**
 - Facts (shared with all rules):
   - `candidate` — with `status` `cand` or `c-value` (decided). Duplicated into child contexts. E.g., TE1 init: `T&E+DFS/T&E1.clp:23`, `:36`.
@@ -31,6 +47,7 @@ How each is used by T&E
 - links — not copied; the child asserts `technique ?cont BRT` so BRT and the usual init‑links rules recompute `csp-linked`/`exists-link` in the child context. Clean rules retract these when done. `T&E1.clp:158`, clean: `:56`–`:83`.
 - globals — counters/printing updated as usual; link caches and density are only for context 0 and are not relied upon to decide contradictions in children (children use their own link facts + app “labels‑linked” functions).
 
+<a id="flow"></a>
 **TE(1), TE(2), TE(3) Flow**
 - Start (depth 1):
   - After BRT in context 0, assert `(technique 0 TE)` and `(phase 0 1)`. `T&E1.clp:120`–`:130`.
@@ -40,26 +57,31 @@ How each is used by T&E
   - Iterate phases if the last phase was productive (to try all candidates again under the new parent state). `T&E1.clp:174`–`:189`.
 - Depth 2/3: same pattern, but contexts can be generated at `depth = 1` (children of 0) and at `depth = 2` (children of children). See `T&E2.clp` and `T&E3.clp` for mirrored rules and per‑depth phase control.
 
+<a id="dfs"></a>
 **DFS (Depth‑First Search)**
 - Uses the same context mechanism and normal rules; differs by pursuing hypotheses until either a solution is detected in a context or a contradiction occurs; tracks `?*DFS-max-depth*`. See `T&E+DFS/DFS.clp:201`–`:252`.
 - Solution detection rule in DFS: if every `csp-variable` has exactly one `c-value` present in the context, assert `solution-found`. `DFS.clp:150`–`:173`.
 
+<a id="forcing"></a>
 **Forcing T&E (Pairs)**
 - For some strategies, T&E is run on both choices of a bivalue (or a candidate pair), then the two derived contexts are compared:
   - If both branches delete the same candidate, delete it in the parent (a “common deletion”).
   - If both branches assert the same `c-value`, assert it in the parent (a “common assertion”).
 - Implemented with compare helpers and result templates like `F2TE-bivalue-pair-simple-result`; see `T&E+DFS/Forcing2-TE.clp:1`–`:120`.
 
+<a id="integrated"></a>
 **Important: Integrated, Not a Separate Solver**
 - T&E/DFS don’t replace the rule engine; they schedule new contexts and seed them with a hypothesis, then let the same BRT/links/chains rules run inside that context.
 - All eliminations and assertions still come from rules (Singles, ECP, chains, subsets, etc.) — not from ad‑hoc procedural code.
 - Cleanup retracts the child’s facts so working memory stays bounded.
 
+<a id="stream"></a>
 **“Single Stream of Reasoning” vs. Search**
 - Pattern rules (e.g., whips, braids) express a single chain of implications inside one rule firing — they don’t branch the state. Even ORk variants are encoded as specific rule families that match structured disjunctions within a single derivation (no recursive search).
 - T&E/DFS is different: it explicitly branches the global state by asserting a hypothesis in a new context; propagation happens independently in that branch. If the branch refutes itself, the parent learns “not that hypothesis.”
 - Practically: enable chains to get human‑style, linear deductions; enable T&E/DFS when you accept proof by contradiction or need completeness.
 
+<a id="used"></a>
 **What Is/Isn’t Used By T&E**
 - Used directly:
   - `candidate`/`c-value`, `csp-variable`/`is-csp-variable-for-label`, `context`/`technique`/`phase`, link facts (`csp-linked`/`exists-link`) inside the child, and any rule families you enabled.
@@ -68,6 +90,7 @@ How each is used by T&E
 - Not relied upon inside child contexts:
   - Global link caches and density (they are maintained for context 0 only).
 
+<a id="pointers"></a>
 **Pointers**
 - TE(1): `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/T&E+DFS/T&E1.clp` (init, contradiction/no‑contradiction, generate/iterate, clean).
 - TE(2)/TE(3): `.../T&E2.clp`, `.../T&E3.clp` (mirrored rules per depth).
@@ -75,6 +98,7 @@ How each is used by T&E
 - Forcing T&E: `.../Forcing2-TE.clp` (pair compare), `.../ORk-Forcing-TE.clp`.
 - Flags and prints: `CSP-Rules-Generic/GENERAL/globals.clp` (T&E/DFS toggles at ~:753–:775; prints at :1801+).
 
+<a id="see"></a>
 **See Also**
 - State: how facts/globals are copied or recomputed in child contexts — [State](State.md)
 - Model: object vocabulary for reading T&E rules — [Model](Model.md)

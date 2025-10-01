@@ -1,3 +1,14 @@
+## Contents
+- [Idea At A Glance](#idea)
+- [Instances Across Applications](#instances)
+- [Similarities vs Differences](#compare)
+- [API Surface](#api)
+- [Why This Works](#why)
+- [Design Checklist](#design)
+- [Quick File Index](#files)
+- [See Also](#see)
+
+<a id="idea"></a>
 **Beyond Binary: How CSP‑Rules Encodes Non‑Binary Constraints**
 
 **Idea At A Glance**
@@ -18,6 +29,7 @@ What “extra variables” buy you
   - exists‑links: pairs related by non‑csp relations (inequality, neighbour, distance).
 - This uniform link graph powers all chain families (whips, braids, typed/g‑variants) and Singles.
 
+<a id="instances"></a>
 **Instances Across Applications**
 
 Sudoku (SudoRules)

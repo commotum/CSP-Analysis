@@ -1,8 +1,26 @@
+## Contents
+- [TL;DR](#tl-dr)
+- [Architecture](#architecture)
+- [Directory](#directory)
+- [Usage Cheat‑Sheet](#usage)
+- [What To Read First](#read-first)
+- [Data & State Model](#data)
+- [Public Surface](#public)
+- [Config & Flags](#config)
+- [Resolution Theory](#resolution)
+- [Naming & Extension](#naming)
+- [Comparison](#comparison)
+- [Glossary](#glossary)
+- [Schema & Flow](#schema)
+- [Fast vs Thorough](#fast)
+
+<a id="tl-dr"></a>
 **TL;DR**
 - This workspace contains a local copy of the CSP-Rules codebase and the companion examples repository: `CSP-Rules/CSP-Rules-V2.1/` and `CSP-Rules-Examples/`.
 - CSP-Rules is a pattern-based (rule-based) solver for finite binary CSPs implemented in CLIPS; an application layer (e.g., Sudoku) extends generic templates and rules.
 - This document summarizes architecture (generic core → app modules), shows where to look for data/state models and loaders, and captures usage patterns directly from the examples (no execution required).
 
+<a id="architecture"></a>
 **Architecture At A Glance**
 - Generic Core
   - Loader orchestrates generic modules and then batches the active application loader: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/CSP-Rules-Generic-Loader.clp:1073`.
@@ -18,6 +36,7 @@
 - Configuration
   - Per‑app config defines install path and loaders and can auto-batch the generic loader: `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1-config.clp:49`, `:87`, `:90`, `:890`.
 
+<a id="directory"></a>
 **Directory Organization**
 - `CSP-Rules/CSP-Rules-V2.1/`
   - `CSP-Rules-Generic/` — Generic engine (templates, globals, solve, chains, T&E/DFS, utils).
@@ -31,6 +50,7 @@
 - Root
   - `overview.md` — This analysis and guide. `README.md` — Workspace readme.
 
+<a id="usage"></a>
 **Examples‑First Usage Cheat‑Sheet (No‑Run)**
 - Load Order Convention (from app config and loaders)
   - In CLIPS REPL: load a per‑app config (it sets `?*CSP-Rules*` to your install and defines loader paths), then the config batches the generic loader which in turn batches the app loader.
@@ -50,6 +70,7 @@
 - Important Path Note (for later execution)
   - The Sudoku config currently points `?*CSP-Rules*` to `/home/jake/Developer/CSP-Rules/` (`CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1-config.clp:49`). If running within this workspace, either keep using your external install or update this path to this workspace’s `CSP-Rules/` absolute path.
 
+<a id="read-first"></a>
 **What To Read First**
 - Core concept overview and supported apps: `CSP-Rules/CSP-Rules-V2.1/README.md`.
 - Change history and features: `CSP-Rules/CSP-Rules-V2.1/UPDATES.md`.
@@ -57,6 +78,7 @@
 - Sudoku app structure and public API: `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/*.clp` (especially `solve.clp`, `background.clp`, `templates.clp`).
 - Examples’ README for curated guidance by technique: `CSP-Rules-Examples/README.md`.
 
+<a id="data"></a>
 **Data & State Model**
 - Core templates (generic)
   - `candidate` (status/label/context/flags): `CSP-Rules-Generic/GENERAL/templates.clp:79`.
@@ -73,6 +95,7 @@
 - Contradictions and context
   - Contradictions: no candidate left for a variable; contexts used by T&E/DFS (generic T&E files, candidate context slots).
 
+<a id="public"></a>
 **Public Surface Area**
 - Load order
   - Per‑app config defines `?*CSP-Rules*`, computes directories, and loads generic/app `globals` before batching loaders: `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1-config.clp:49`, :87, :90, :890.
@@ -86,6 +109,7 @@
   - Inputs: inline strings/lists/grids; file‑based sources; outputs: trace lines, stats with init/solve/total time (examples demonstrate formats).
   - Verbosity toggles: `?*print-*` globals in `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/globals.clp:1801+` and Sudoku prints at `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/globals.clp:653+`.
 
+<a id="config"></a>
 **Configuration & Feature Flags**
 - Paths and loaders
   - `?*CSP-Rules*` install path, dir separators, CLIPS version banner: `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1-config.clp:49`, :31, :65.
@@ -104,6 +128,7 @@
   - Whips/Braids + T&E and lengths: `CSP-Rules-Examples/README.md:168`–:181.
   - Controlled‑bias study presets: `CSP-Rules-Examples/Sudoku-b/cbg-000/launch.txt:23`–:65.
 
+<a id="resolution"></a>
 **Resolution Theory & Rule System**
 - BRT (Singles + ECP)
   - Generic ECP: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/ECP.clp`; generic Singles: `.../GENERAL/Single.clp`.
@@ -118,6 +143,7 @@
 - Lifecycle
   - After config loads globals, Singles run, then `init-links` asserts links/glinks; chain/subset/uniqueness/exotic rules fire per salience until solved or limits reached.
 
+<a id="naming"></a>
 **Naming, Conventions, How To Extend**
 Naming Patterns
 - Techniques map to folders and rule names: `CHAIN-RULES-*` (whips, z‑chains, t‑whips, braids), app `SUBSETS/`, `UNIQUENESS/`, `EXOTIC/`.
@@ -134,6 +160,7 @@ Extension Recipe
 - Reuse generic rules via the generic loader; add app‑specific rules in `GENERAL`, `SUBSETS`, `UNIQUENESS`, `EXOTIC`.
 - Provide `YourApp-Vx.y-config.clp` and `YourApp-Loader.clp` like SudoRules.
 
+<a id="comparison"></a>
 **CSP‑Rules vs Traditional CSP Solvers**
 Same
 - Finite domains with candidates; constraint propagation over binary constraints (non‑binary encoded via extra variables).
@@ -144,6 +171,7 @@ Different
 - Systematic additional typed variables (e.g., `rn/cn/bn` in Sudoku) to expose structure.
 - Optional T&E/DFS integrated under the same rule framework (`CSP-Rules-Generic/T&E+DFS/`).
 
+<a id="glossary"></a>
 **Glossary**
 Candidate — A potential value for a variable with status/context slots (CSP‑Rules‑Generic/GENERAL/templates.clp:79).
 
@@ -179,6 +207,7 @@ Rating Types — Derived from generic and app settings (`CSP-Rules-Generic/GENER
 - Non‑binary → binary modeling — [Beyond](Beyond.md)
 - Trial & Error and DFS — [T&E](T&E.md)
 
+<a id="schema"></a>
 **Schema & Flow**
 ```
 Inputs                          Load & Setup                        Core Facts & Links                 Solve Phases                     Effects / Output
@@ -203,6 +232,7 @@ Loop until solved / contradiction / limits:
 
 Key refs: generic templates `CSP-Rules-Generic/GENERAL/templates.clp`, Sudoku background `SudoRules-V20.1/GENERAL/background.clp:407,430`, init-links `CSP-Rules-Generic/GENERAL/init-links.clp:49`, saliences `.../GENERAL/saliences.clp:448`.
 
+<a id="fast"></a>
 **Fast vs Thorough Config**
 - Fast (quick feedback; minimal logging)
   - Use SPEED chains (default): `CSP-Rules-Generic/GENERAL/globals.clp:360` (`?*chain-rules-optimisation-type* = SPEED`).

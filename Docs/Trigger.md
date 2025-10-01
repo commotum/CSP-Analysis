@@ -1,3 +1,15 @@
+## Contents
+- [Mental Model](#mental)
+- [Taxonomy](#taxonomy)
+- [Condition–Action Anatomy](#anatomy)
+- [Prerequisites](#prereq)
+- [Reading Rules](#reading)
+- [Code Map](#codemap)
+- [More Families](#more)
+- [Quick Reference](#quickref)
+- [See Also](#see)
+
+<a id="mental"></a>
 **Pattern Triggers In CSP‑Rules**
 
 This document explains how every rule fits a simple Scope → Trigger → Action mental model, and organizes the main pattern families (a taxonomy) you’ll find in CSP‑Rules.
@@ -18,6 +30,7 @@ Execution pipeline and gating
   1) BRT (Singles + ECP), 2) init‑links (compute `csp-linked`/`exists-link`), 3) play (chains, subsets, uniqueness, exotic), optionally 4) T&E/DFS. Pointers: `CSP-Rules-Generic/GENERAL/solve.clp`, `.../saliences.clp:448`, `.../play.clp`.
 - Families are enabled or blocked via globals (e.g., `?*Whips*`, `?*Subsets*`, `?*blocked-chains*`). Pointers: `CSP-Rules-Generic/GENERAL/globals.clp:378`–`:579`.
 
+<a id="taxonomy"></a>
 **Taxonomy (Pattern Families)**
 
 1) Core Propagation
@@ -85,12 +98,14 @@ Execution pipeline and gating
 7) Search Augmentations (Control, not pattern families)
 - T&E(n) and DFS: create child contexts and run the same pattern families there; conclusions feed back to the parent (eliminations) or detect solution. Files: `CSP-Rules-Generic/T&E+DFS/*`.
 
+<a id="anatomy"></a>
 **Condition–Action Anatomy Of A Rule (Typical)**
 - LHS (Scope + Trigger):
   - Bind a `context`; match a named `technique` phase (for ordering); collect candidate labels and their typed variables; walk links/glinks or sector membership; ensure exclusivity with `not` and `forall` conditions.
 - RHS (Action):
   - Eliminate `(retract (candidate ...))` or assert a value `(modify cand (status c-value))`; update counters for context 0; print/record technique if configured.
 
+<a id="prereq"></a>
 **Prerequisites For Each Family**
 - Subsets: app templates expose unit membership (row/col/block/run); scope is a set of labels in the unit.
 - Chains: require `init-links` to have asserted link facts; for g‑chains also need `g-candidate`s and `init-glinks`.
@@ -98,21 +113,25 @@ Execution pipeline and gating
 - ORk chains: app asserts OR‑relation facts and modules; generic ORk templates available.
 - Uniqueness/Deadly: app templates/derived facts to detect deadly structures.
 
+<a id="reading"></a>
 **Putting It Together (How To Think While Reading Rules)**
 - Identify the family (taxonomy above) and confirm its prerequisites are loaded (globals enabled; modules present).
 - Read the rule’s Scope in LHS: what unit/run/graph area is being matched? where do candidates/glinks/typed vars come from?
 - Identify the Trigger: the exact shape (counts, link alternations, OR sections, subset cardinalities).
 - Map the Action: which labels are eliminated or asserted, which counters/prints fire — verify they’re limited to the rule’s `context`.
 
+<a id="codemap"></a>
 **Code Map (Where They Live)**
 - Generic chain families: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/CHAIN-RULES-*/*` (COMMON, SPEED, MEMORY, EXOTIC).
 - Generic core (BRT, links, salience, templates): `CSP-Rules-Generic/GENERAL/*`.
 - Sudoku application (canonical example): `SudoRules-V20.1/GENERAL`, `/SUBSETS`, `/UNIQUENESS`, `/EXOTIC`, `/MODULES`.
 - Other applications (LatinSquares/Futoshiki/Kakuro/Hidato/Numbrix/Slitherlink/Map): mirror the same structure per domain.
 
+<a id="more"></a>
 **Are There More?**
 - The major families above cover the solver’s public resolution theory. Additional domain‑specific helpers (e.g., sector combinatorics in Kakuro) and exotic modules (Oddagon/Tridagon‑based) fit under Subset/Chain/ORk umbrellas. Search augmentations (T&E/DFS) are control strategies, not resolution patterns, but they reuse the same Scope→Trigger→Action rules inside child contexts.
 
+<a id="quickref"></a>
 **Quick Reference**
 - BRT/ECP — per csp‑variable | immediate conflicts from givens/structure | eliminate candidates; assert forced values | CSP-Rules-Generic/GENERAL/ECP.clp:1, .../Single.clp:1
 - Singles (NS/HS) — unit (row/col/block) | only place for a number / only value in a cell | set `c-value` | SudoRules-V20.1/GENERAL/NS.clp:1, HS.clp:1
@@ -129,6 +148,7 @@ Execution pipeline and gating
 - Map Neighbourhood — countries | same‑colour on adjacent countries | eliminate same‑colour neighbours | MapRules-V2.1/GENERAL/init-links.clp:38
 - Slitherlink Degree/Loop — edges/vertices | degree/loop constraints per type | prune edge states | SlitherRules-V2.1/GENERAL/S.clp:61, init-links.clp:60
 
+<a id="see"></a>
 **See Also**
 - Overview: how families load — [Overview](Overview.md)
 - Model: chain objects and typed chains — [Model](Model.md)

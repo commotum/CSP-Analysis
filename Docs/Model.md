@@ -1,14 +1,33 @@
+## Contents
+- [Purpose](#purpose)
+- [Big Picture](#big-picture)
+- [Core Data Model](#core)
+- [Labels, Typed Variables, Links](#labels)
+- [Phases and Scheduling](#phases)
+- [Rule Families](#families)
+- [Abstract Data Structure](#abstract)
+- [Public API](#api)
+- [Config & Flags](#config)
+- [Links Drive Rules](#links)
+- [Traditional vs CSP‑Rules](#compare)
+- [Cheat‑Sheet](#cheat)
+- [File Pointers](#files)
+- [See Also](#see)
+
+<a id="purpose"></a>
 **Purpose**
 - Mental model and API of CSP-Rules as used in this workspace.
 - Focus on variable types, how rules operate, how links are generated, and how the engine’s components fit together.
 - Contrast with “typical” CSP solvers and clarify what’s different here.
 
+<a id="big-picture"></a>
 **Big Picture**
 - Forward‑chaining rule system (CLIPS + RETE) over a shared working memory of facts.
 - Generic core defines data contracts (templates), globals, link initialisation, salience scheduling, and chain families.
 - Each application (e.g., Sudoku) extends templates, defines label/variable typing and link semantics, and adds app‑specific rules.
 - Execution runs in phases: initialise instance → BRT (Singles + ECP) → init‑links → play (chains, subsets, uniqueness, exotic) until solved.
 
+<a id="core"></a>
 **Core Data Model**
 - Generic templates
   - `candidate` — atomic candidates with status and label; holds context and flags. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/templates.clp:79`
@@ -21,6 +40,7 @@
   - `csp-linked`, `exists-link` between labels; `csp-glinked`, `exists-glink` for grouped links. Asserted during init‑links/glinks.
   - `context` and `technique` facts orchestrate phases and track the current rule family.
 
+<a id="labels"></a>
 **Labels, Typed Variables, and Links**
 - Labels and typed CSP variables (Sudoku)
   - Typed variables derive from structure (rows/columns/blocks):
@@ -41,6 +61,7 @@
   - `add-link` and `add-glink` push pairs into `?*links*` / `?*glinks*` and update counts. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/generic-background.clp:230`, `:273`
   - Density computed from candidate and link counts when `play` begins. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/play.clp:42`
 
+<a id="phases"></a>
 **Phases and Scheduling**
 - Solve loop (generic model)
   - `solve` initialises globals and app structures, asserts `(context (name 0))`, runs the engine, and prints times. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/solve.clp:93`
@@ -51,6 +72,7 @@
 - Technique tracking
   - Many rules assert `(technique ?cont <name>)` and set `?*technique*` for reporting. Rules also decrement `?*nb-candidates*` when eliminating candidates.
 
+<a id="families"></a>
 **Rule Families (Resolution Theory)**
 - BRT — Basic Resolution Theory
   - ECP (Elementary Constraint Propagation) uses `labels-linked` to prune. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/ECP.clp:1`
@@ -63,6 +85,7 @@
 - Search augmentations
   - T&E(n) and DFS integrated into the same rule framework. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/T&E+DFS:1`
 
+<a id="abstract"></a>
 **Abstract Data Structure**
 - Working Memory (facts)
   - Template facts: `candidate`, `g-candidate`, `csp-variable`, and app‑specific templates.
@@ -74,6 +97,7 @@
 - RETE Network
   - Rules (defrule) compile into a RETE network; pattern matches over facts drive eliminations/assertions without explicit control flow.
 
+<a id="api"></a>
 **Public API Surface**
 - Load order (REPL)
   - Load a per‑app config; it defines `?*CSP-Rules*`, computes directories, loads generic/app globals, and batches loaders. `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1-config.clp:49`, `:87`, `:90`, `:890`
@@ -85,6 +109,7 @@
 - Preferences
   - `(solve-w-preferences ...)` delegates to `solve` but allows pref ordering; used in some examples. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/MODULES/modules.clp:98`
 
+<a id="config"></a>
 **Configuration and Feature Flags**
 - Chain implementation mode: `?*chain-rules-optimisation-type*` = `SPEED` or `MEMORY`. Default is SPEED. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/globals.clp:360`
 - Enable/disable families: `?*Subsets*`, `?*Whips*`, `?*Braids*`, typed/g‑variants, ORk options. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/globals.clp:399`, `:448`
@@ -92,11 +117,13 @@
 - App‑specific toggles (Sudoku): `?*FinnedFish*`, `?*Unique-Rectangles*`, `?*BUG*`, `?*Deadly-Patterns*`, Tridagons, etc. `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/globals.clp:113`, `:119`, `:156`
 - Print options: `?*print-actions*`, `?*print-levels*`, `?*print-solution*`, summaries after Singles/final RS. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/globals.clp:1801`
 
+<a id="links"></a>
 **How Links Drive Rules**
 - Chain rules and many app rules match on `exists-link`/`csp-linked`/`exists-glink` to walk adjacency among candidates and g‑candidates.
 - Typed reasoning leverages `csp-linked` with specific typed variables, while general reasoning uses `exists-link`.
 - g‑chains rely on `exists-glink` plus app‑specific grouping of labels into `g-candidate`s (e.g., row/column segments in Sudoku). `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/init-glinks.clp:22`
 
+<a id="compare"></a>
 **How CSPs Normally Work vs CSP‑Rules**
 - Typical CSP solvers
   - Variables with finite domains; constraints propagate (AC/GAC) and search/backtracking explores assignments.
@@ -108,6 +135,7 @@
   - Integrated T&E/DFS: optional, controlled by flags, but implemented within the same rule framework rather than a separate solver.
   - Single stream of reasoning within each pattern (e.g., whips), even when exploring ORk variants.
 
+<a id="cheat"></a>
 **Mental Model Cheat‑Sheet**
 - State = facts (candidates, csp‑vars, links) + globals (toggles, counters, caches).
 - Engine = RETE network over defrules with saliences; rules assert `(technique ...)`, eliminate candidates (set to `c-value` or retract), and add derived links.
@@ -116,6 +144,7 @@
 - Phases = BRT → init‑links → play (chains/subsets/uniqueness/exotic) until solved or limits.
 - API = load config → generic loader → app loader → call `solve`/app helpers.
 
+<a id="files"></a>
 **File Pointers (Quick Index)**
 - Generic templates: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/templates.clp:79`
 - Sudoku templates: `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/templates.clp:22`
@@ -127,6 +156,7 @@
 - Salience setup: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/saliences.clp:448`
 - Chain families: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/CHAIN-RULES-SPEED:1`, `.../MEMORY:1`, `.../EXOTIC:1`
 
+<a id="see"></a>
 **See Also**
 - Overview: architecture, run order — [Overview](Overview.md)
 - State: working memory + globals — [State](State.md)
