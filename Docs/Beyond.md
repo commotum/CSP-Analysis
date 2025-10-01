@@ -16,7 +16,7 @@
 - Model every global/non‑binary constraint by introducing extra, typed CSP variables whose domains enumerate the local choices that must be mutually exclusive.
 - Connect those typed variables to the concrete candidate labels via `is-csp-variable-for-label` facts; then assert pairwise contradiction links (`csp-linked`) between labels that share the same typed variable.
 - Optionally add non‑csp links (`exists-link`) for relational constraints that aren’t “exactly‑one” (e.g., inequalities, adjacency, distance).
-- Chain rules and Singles then operate over a pure graph of binary links and glinks.
+- Chain rules and Singles then operate over a pure graph of binary links and glinks. See [Graphs](Graphs.md) for the node/edge model and how it’s built.
 
 Core machinery (generic)
 - `csp-variable`, `candidate`, `g-candidate` templates: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/templates.clp`
@@ -102,6 +102,7 @@ Similarities vs Differences
 - Once reduced to a labelled graph with binary edges, the same chain/whip/braid machinery applies across domains.
 
 **See Also**
+- Graphs: nodes/edges, typed and grouped layers — [Graphs](Graphs.md)
 - Overview: high‑level architecture — [Overview](Overview.md)
 - Model: labels, typed variables, links — [Model](Model.md)
 - Pattern taxonomy: where these links are used — [Trigger](Trigger.md)

@@ -33,7 +33,8 @@ Reference note: Pointers use file paths and named symbols (no line numbers) to a
     - `csp-linked` (same typed variable ⇒ mutual exclusion) and `exists-link` (any app‑level adjacency): computed in `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/init-links.clp`. Apps can override (e.g., Latin adds diagonals: `CSP-Rules/CSP-Rules-V2.1/LatinRules-V2.1/GENERAL/init-links.clp`).
   - Grouped edges (when g‑labels are active):
     - `csp-glinked`, `exists-glink` from labels to `g-candidate`s; see Sudoku’s `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/init-glinks.clp` and generic glinks summary `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/init-glinks.clp`.
-  - Some apps seed “physical” edges first, then init‑links derives effective edges (e.g., Map `physical-link`: `CSP-Rules/CSP-Rules-V2.1/MapRules-V2.1/GENERAL/init-links.clp`; Slither `physical-csp-link/physical-link`: `CSP-Rules/CSP-Rules-V2.1/SlitherRules-V2.1/GENERAL/init-links.clp`).
+- Some apps seed “physical” edges first, then init‑links derives effective edges (e.g., Map `physical-link`: `CSP-Rules/CSP-Rules-V2.1/MapRules-V2.1/GENERAL/init-links.clp`; Slither `physical-csp-link/physical-link`: `CSP-Rules/CSP-Rules-V2.1/SlitherRules-V2.1/GENERAL/init-links.clp`).
+  - For the full graph model (nodes, edge types, glinks, typed variants), see [Graphs](Graphs.md).
 
 - Contexts (for T&E/DFS)
   - `context (name, parent, depth, generating-cand…)`: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/templates.clp`.
@@ -123,6 +124,7 @@ Key points about globals
 
 <a id="see"></a>
 **See Also**
+- Graphs: node/edge structure and lifecycle — [Graphs](Graphs.md)
 - Model: objects and API surface — [Model](Model.md)
 - Overview: load order and modules — [Overview](Overview.md)
 - Pattern taxonomy: where facts are matched — [Trigger](Trigger.md)

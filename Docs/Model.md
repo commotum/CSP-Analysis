@@ -162,6 +162,7 @@ Reference note: Pointers use file paths and named symbols, not line numbers, to 
 **See Also**
 - Overview: architecture, run order — [Overview](Overview.md)
 - State: working memory + globals — [State](State.md)
+- Graphs: nodes/edges, build, pruning — [Graphs](Graphs.md)
 - Pattern taxonomy: how rules read as Scope → Trigger → Action — [Trigger](Trigger.md)
 - Output notation: how chains print — [Notation](Notation.md)
 - Non‑binary → binary across apps — [Beyond](Beyond.md)

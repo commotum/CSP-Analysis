@@ -18,7 +18,7 @@ Reference note: Pointers use file paths and named symbols, not line numbers, to 
 
 **Mental Model (Scope → Trigger → Action)**
 - Scope (what we look at)
-  - A bounded set of facts: candidates/csp‑variables inside a unit (row/col/block), a sector/run, or along link‑reachable candidates (chains). For chain families, scope is the local subgraph built from `csp-linked`/`exists-link` (and optionally `exists-glink`).
+  - A bounded set of facts: candidates/csp‑variables inside a unit (row/col/block), a sector/run, or along link‑reachable candidates (chains). For chain families, scope is the local subgraph built from `csp-linked`/`exists-link` (and optionally `exists-glink`). See [Graphs](Graphs.md) for node/edge types.
 - Trigger (condition)
   - A recognizable arrangement in scope: e.g., “two cells share only the same two numbers” (Naked Pair), or “a chain of length n linking target to a contradiction” (whip[n]). Implemented as the left‑hand side (LHS) of a CLIPS `defrule` matching templates (candidates, links, typed relations) and tests.
 - Action (consequence)
@@ -157,4 +157,5 @@ Execution pipeline and gating
 - State: facts matched by rules — [State](State.md)
 - Notation: reading chain and subset lines — [Notation](Notation.md)
 - Beyond: the link model that chains traverse — [Beyond](Beyond.md)
+- Graphs: graphs that chain families walk — [Graphs](Graphs.md)
 - T&E / DFS: control strategies around the same rules — [T&E](T&E.md)

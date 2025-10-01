@@ -20,7 +20,7 @@
 - CSP-Rules is a pattern-based (rule-based) solver for finite binary CSPs implemented in CLIPS; an application layer (e.g., Sudoku) extends generic templates and rules.
 - This document summarizes architecture (generic core → app modules), shows where to look for data/state models and loaders, and captures usage patterns directly from the examples (no execution required).
 
-Reading order (recommended): Overview → Notation → Model → State → Trigger → Beyond → T&E. Reason: learn to read traces first, then build mental models and layer in taxonomy and app‑specific details.
+Reading order (recommended): Overview → Notation → Model → Graphs → State → Trigger → Beyond → T&E. Reason: learn to read traces first, then build mental models, understand the graph (nodes/edges) that rules traverse, and layer in taxonomy and app‑specific details.
 
 Reference note: Pointers in this guide use file paths and named symbols instead of line numbers to avoid drift across versions.
 

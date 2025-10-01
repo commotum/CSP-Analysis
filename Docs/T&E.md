@@ -37,7 +37,7 @@ Reference note: Pointers use file paths and named symbols, not line numbers, to 
 - Facts (shared with all rules):
   - `candidate` — with `status` `cand` or `c-value` (decided). Duplicated into child contexts. E.g., TE1 init in `T&E+DFS/T&E1.clp`.
   - `csp-variable` and `is-csp-variable-for-label` — used to detect contradictions: if a variable has no remaining candidate in a child, the hypothesis is refuted. See `T&E+DFS/T&E1.clp`.
-  - Link facts: `csp-linked` and `exists-link` — re‑computed inside each child context by the normal init‑links phase (not copied). Cleaned on context teardown. See `.../GENERAL/init-links.clp` and TE clean rules (in `T&E+DFS/T&E1.clp`).
+  - Link facts: `csp-linked` and `exists-link` — re‑computed inside each child context by the normal init‑links phase (not copied). Cleaned on context teardown. See `.../GENERAL/init-links.clp` and TE clean rules (in `T&E+DFS/T&E1.clp`). For the overall graph model and edge types, see [Graphs](Graphs.md).
   - Orchestration facts: `context (name, parent, depth, generating-cand)`, `technique`, `phase`, `phase-productive-in-context`, `clean-and-retract`. These steer hypothesis creation, iteration, and cleanup. See `T&E+DFS/T&E1.clp`.
 - Globals (selected):
   - Counters: `?*context-counter*`, `?*nb-candidates*`, `?*nb-csp-variables-solved*`, `?*DFS-max-depth*` (DFS only). See `T&E1.clp`, `DFS.clp`.
@@ -107,3 +107,4 @@ How each is used by T&E
 - Trigger: pattern families that run inside T&E contexts — [Trigger](Trigger.md)
 - Notation: reading T&E/DFS prints and implications — [Notation](Notation.md)
 - Beyond: contradictions over csp‑variables — [Beyond](Beyond.md)
+- Graphs: how link/glink graphs are built and used — [Graphs](Graphs.md)

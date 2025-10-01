@@ -31,7 +31,7 @@ Reference note: Pointers use file paths and named symbols, not line numbers, to 
 <a id="quickstart"></a>
 **Quick Start (Read Chains In 30 Seconds)**
 - Look for the header: technique + length, e.g., `whip[5]:` or `biv-chain[3]:`.
-- Read each cell as a CSP‑variable context with two values: `{val1 val2}`; links are shown with ` - `.
+- Read each cell as a CSP‑variable context with two values: `{val1 val2}`; links are shown with ` - `. For the underlying node/edge model, see [Graphs](Graphs.md).
 - For non‑reversible families (whips/braids), the final cell prints `{val .}` to mark the missing right candidate.
 - The implication shows the conclusion: ` ==> not <label>` (elimination) or ` ==> assert <label>` (forcing).
 - One printed line = one linear derivation (single stream of reasoning); ORk families show side branches but still yield a single conclusion.
@@ -230,5 +230,6 @@ Futoshiki — 9x9‑Extreme‑SHT (CSP-Rules-Examples/Futoshiki/Tatham/9x9-Extre
 - Model: how labels/cells are formed — [Model](Model.md)
 - Overview: where print helpers live — [Overview](Overview.md)
 - State: counters and density printed around traces — [State](State.md)
+- Graphs: what ` - ` means and how edges are built — [Graphs](Graphs.md)
 - Beyond: how typed variables affect printed cells — [Beyond](Beyond.md)
 - T&E: how hypotheses appear in logs — [T&E](T&E.md)
