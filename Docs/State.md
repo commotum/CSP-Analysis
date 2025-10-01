@@ -14,35 +14,37 @@
 
 State = facts in working memory + globals. Facts capture the live problem (candidates, variables, links, contexts, chains). Globals capture configuration toggles, counters, and small caches used by rules and output.
 
+Reference note: Pointers use file paths and named symbols (no line numbers) to avoid drift across versions.
+
 <a id="facts"></a>
 **Facts (Working Memory)**
 - Core candidates
-  - `candidate` — per placement, with `status` `cand` or `c-value`, plus `context` and `flag` (T&E). Generic template: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/templates.clp:79`. Apps extend with structural slots (e.g., Sudoku adds `number/row/column/block` in `SudoRules-V20.1/GENERAL/templates.clp:22`).
-  - `g-candidate` — grouped labels for g‑chains; has `type` and optional `csp-var`: `CSP-Rules-Generic/GENERAL/templates.clp:101` (generic), app variants (e.g., Sudoku `SudoRules-V20.1/GENERAL/templates.clp:41`).
+  - `candidate` — per placement, with `status` `cand` or `c-value`, plus `context` and `flag` (T&E). Generic template: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/templates.clp`. Apps extend with structural slots (e.g., Sudoku adds `number/row/column/block` in `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/templates.clp`).
+  - `g-candidate` — grouped labels for g‑chains; has `type` and optional `csp-var`: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/templates.clp` (generic), app variants (e.g., Sudoku `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/templates.clp`).
 
 - Structural model
   - `csp-variable` — one per typed “slot” (e.g., Sudoku `rc/rn/cn/bn`): created per app; used to detect contradictions: “no label left for a csp-variable”.
   - Label↔variable relations:
-    - `is-csp-variable-for-label` and `is-csp-variable-for-glabel`: `CSP-Rules-Generic/GENERAL/templates.clp:131`, `:139`.
-    - Typed variants for typed chains: `is-typed-csp-variable-for-label/glabel`: `CSP-Rules-Generic/GENERAL/templates.clp:147`, `:157`.
+    - `is-csp-variable-for-label` and `is-csp-variable-for-glabel`: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/templates.clp`.
+    - Typed variants for typed chains: `is-typed-csp-variable-for-label/glabel`: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/templates.clp`.
 
 - Links (binary graph edges over labels)
   - Effective edges asserted at init per context:
-    - `csp-linked` (same typed variable ⇒ mutual exclusion) and `exists-link` (any app‑level adjacency): computed in `CSP-Rules-Generic/GENERAL/init-links.clp:49` (rules at :78, :102). Apps can override (e.g., Latin adds diagonals: `LatinRules-V2.1/GENERAL/init-links.clp:74`).
+    - `csp-linked` (same typed variable ⇒ mutual exclusion) and `exists-link` (any app‑level adjacency): computed in `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/init-links.clp`. Apps can override (e.g., Latin adds diagonals: `CSP-Rules/CSP-Rules-V2.1/LatinRules-V2.1/GENERAL/init-links.clp`).
   - Grouped edges (when g‑labels are active):
-    - `csp-glinked`, `exists-glink` from labels to `g-candidate`s; see Sudoku’s `SudoRules-V20.1/GENERAL/init-glinks.clp:61` and generic glinks summary `CSP-Rules-Generic/GENERAL/init-glinks.clp:213`.
-  - Some apps seed “physical” edges first, then init‑links derives effective edges (e.g., Map `physical-link`: `MapRules-V2.1/GENERAL/init-links.clp:24`; Slither `physical-csp-link/physical-link`: `SlitherRules-V2.1/GENERAL/init-links.clp:33`).
+    - `csp-glinked`, `exists-glink` from labels to `g-candidate`s; see Sudoku’s `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/init-glinks.clp` and generic glinks summary `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/init-glinks.clp`.
+  - Some apps seed “physical” edges first, then init‑links derives effective edges (e.g., Map `physical-link`: `CSP-Rules/CSP-Rules-V2.1/MapRules-V2.1/GENERAL/init-links.clp`; Slither `physical-csp-link/physical-link`: `CSP-Rules/CSP-Rules-V2.1/SlitherRules-V2.1/GENERAL/init-links.clp`).
 
 - Contexts (for T&E/DFS)
-  - `context (name, parent, depth, generating-cand…)`: `CSP-Rules-Generic/GENERAL/templates.clp:256`.
+  - `context (name, parent, depth, generating-cand…)`: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/templates.clp`.
   - Orchestration helpers: `technique` (phase marker), `phase`, `phase-productive-in-context`, `clean-and-retract` (created/consumed by T&E rules in `CSP-Rules-Generic/T&E+DFS/*`).
 
 - Chains and patterns (derived reasoning state)
-  - `chain`, `typed-chain`, `csp-chain`, `chain2r`, `ORk-chain`, `ORk-relation`: `CSP-Rules-Generic/GENERAL/templates.clp:284`, `:305`, `:328`, `:355`, `:448`, `:427`.
+  - `chain`, `typed-chain`, `csp-chain`, `chain2r`, `ORk-chain`, `ORk-relation`: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/templates.clp`.
   - These are asserted/transient while rules fire; they carry the sequence (llcs/rlcs/csp-vars) and are context‑scoped via `context` slot.
 
 - Focus/utility
-  - `candidate-in-focus` for narrowing search/printing (optional): `CSP-Rules-Generic/GENERAL/templates.clp:237`.
+  - `candidate-in-focus` for narrowing search/printing (optional): `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/templates.clp`.
   - App‑specific helpers (e.g., Kakuro `sector-with-gcombs`), not core to state.
 
 Key points about facts
@@ -54,42 +56,42 @@ Key points about facts
 **Globals (Toggles, Counters, Caches)**
 - Universal per‑instance counters (reset by `init-universal-globals`)
   - `?*nb-csp-variables*`, `?*nb-csp-variables-solved*`, `?*nb-candidates*`, `?*nb-g-candidates*`.
-  - Link metrics: `?*csp-links-count*`, `?*links-count*`, `?*csp-glinks-count*`, `?*glinks-count*`; density `%`: `?*density*` computed as `density(nb-cands, nb-links)`: `CSP-Rules-Generic/UTIL/utils.clp:190`.
+  - Link metrics: `?*csp-links-count*`, `?*links-count*`, `?*csp-glinks-count*`, `?*glinks-count*`; density `%`: `?*density*` computed as `density(nb-cands, nb-links)`; see `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/UTIL/utils.clp`.
   - Time: `?*init-instance-time*`, `?*solve-instance-time*`, `?*total-instance-time*`.
   - Context/search: `?*context-counter*`, `?*max-depth*`, `?*DFS-max-depth*`, `?*solution-found*`.
   - Lists for output: `?*label-links*`, `?*label-glabel-glinks*`, `?*label-in-glabel*`, `?*glabel-in-glabel*`.
-  Pointers: `CSP-Rules-Generic/GENERAL/globals.clp:68`–`:210`; init at `:135`–`:178`.
+  Pointers: see `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/globals.clp` for definitions and initialisation.
 
 - Feature toggles (resolution theory)
-  - Families: `?*Subsets*`, `?*Bivalue-Chains*`, `?*z-Chains*`, `?*t-Whips*`, `?*Whips*`, `?*Braids*`, typed/g variants; ORk options; max lengths. See `CSP-Rules-Generic/GENERAL/globals.clp:399`–`:579`, `:735`–`:775`.
-  - Behaviour switches: `?*blocked-Subsets*`, `?*blocked-chains*`, `?*unblocked-behaviour*`: `:378`–`:387`.
-  - Chain implementation mode: `?*chain-rules-optimisation-type*` = SPEED/MEMORY: `:360`.
-  - T&E/DFS toggles: `?*TE1*`, `?*TE2*`, `?*TE3*`, `?*DFS*`, `?*Forcing-TE*`: `:753`–`:775`.
-  - Printing: `?*print-actions*`, `?*print-solution*`, `?*print-RS-after-Singles*`, many per‑technique flags; generic at `:1801+`, app‑specific at `SudoRules-V20.1/GENERAL/globals.clp:653+`.
+  - Families: `?*Subsets*`, `?*Bivalue-Chains*`, `?*z-Chains*`, `?*t-Whips*`, `?*Whips*`, `?*Braids*`, typed/g variants; ORk options; max lengths. See `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/globals.clp`.
+  - Behaviour switches: `?*blocked-Subsets*`, `?*blocked-chains*`, `?*unblocked-behaviour*` (in generic `globals.clp`).
+  - Chain implementation mode: `?*chain-rules-optimisation-type*` = SPEED/MEMORY (in generic `globals.clp`).
+  - T&E/DFS toggles: `?*TE1*`, `?*TE2*`, `?*TE3*`, `?*DFS*`, `?*Forcing-TE*` (see generic `globals.clp`).
+  - Printing: `?*print-actions*`, `?*print-solution*`, `?*print-RS-after-Singles*`, many per‑technique flags; see generic `globals.clp` and app‑specific `SudoRules-V20.1/GENERAL/globals.clp`.
 
 - Small caches (label pair sets)
-  - `?*links*`, `?*glinks*` hold pairs `(label,label)` or `(label,glabel)` for quick `linked`/`glinked` membership tests: created via `add-link`/`add-glink` in `CSP-Rules-Generic/GENERAL/generic-background.clp:230`, `:273`.
+  - `?*links*`, `?*glinks*` hold pairs `(label,label)` or `(label,glabel)` for quick `linked`/`glinked` membership tests: created via `add-link`/`add-glink` in `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/generic-background.clp`.
   - Maintained for context 0 only (init‑links calls `add-link` only when `cont = 0`). Child contexts recompute link facts but don’t update these caches.
-  - Some apps maintain extra caches (e.g., Futoshiki `?*labels-ineq-links*` for inequalities: `FutoRules-V2.1/GENERAL/background.clp:318`).
+  - Some apps maintain extra caches (e.g., Futoshiki `?*labels-ineq-links*` for inequalities: `CSP-Rules/CSP-Rules-V2.1/FutoRules-V2.1/GENERAL/background.clp`).
 
 Key points about globals
-- Globals persist across `reset` (engine configured with `(set-reset-globals FALSE)`): `CSP-Rules-Generic/GENERAL/globals.clp:26`–`:36`. Each run calls `init-universal-globals` to reset per‑instance counters and caches; feature toggles remain as you set them.
-- Apps can extend globals and override `init-specific-globals` (e.g., Sudoku prints, Tridagon flags): `SudoRules-V20.1/GENERAL/globals.clp:113`, `:286+`.
+- Globals persist across `reset` (engine configured with `(set-reset-globals FALSE)`): see `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/globals.clp`. Each run calls `init-universal-globals` to reset per‑instance counters and caches; feature toggles remain as you set them.
+- Apps can extend globals and override `init-specific-globals` (e.g., Sudoku prints, Tridagon flags): `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/globals.clp`.
 
 <a id="lifecycle"></a>
 **Lifecycle & State Transitions**
 - Init
   - `init-universal-globals` resets counters/caches; app creates `csp-variable`s and asserts `is-csp-variable-for-label` for all labels.
-  - The instance asserts candidates (`cand`), givens as `c-value`, then `context 0` and `technique 0 BRT` are set. See generic solve model: `CSP-Rules-Generic/GENERAL/solve.clp:93`–`:157`.
+  - The instance asserts candidates (`cand`), givens as `c-value`, then `context 0` and `technique 0 BRT` are set. See generic solve model: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/solve.clp`.
 - BRT (Singles + ECP)
   - Eliminates candidates and asserts values; updates `?*nb-candidates*`, `?*nb-csp-variables-solved*` in context 0.
 - init‑links and play
-  - `init-links` asserts `csp-linked`/`exists-link` (and glinks) and updates link counters/caches (context 0 only). Density updated in `play`: `CSP-Rules-Generic/GENERAL/play.clp:42`.
+  - `init-links` asserts `csp-linked`/`exists-link` (and glinks) and updates link counters/caches (context 0 only). Density updated in `play`: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/play.clp`.
   - `play` asserts `(play)` and later families (chains/subsets/uniqueness) fire per salience.
 - T&E/DFS (optional)
-  - New `context` facts are created; parent’s `candidate`/`c-value` facts are duplicated into child; link facts recomputed; contradiction detection uses `csp-variable` coverage tests; child facts are retracted on cleanup. See `CSP-Rules-Generic/T&E+DFS/T&E1.clp:23`, `:86`, `:56`.
+  - New `context` facts are created; parent’s `candidate`/`c-value` facts are duplicated into child; link facts recomputed; contradiction detection uses `csp-variable` coverage tests; child facts are retracted on cleanup. See `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/T&E+DFS/T&E1.clp`.
 - End / Results
-  - `record-results` prints final counts/density if configured: `SudoRules-V20.1/GENERAL/record-results.clp:216`.
+  - `record-results` prints final counts/density if configured: `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/record-results.clp`.
 
 <a id="mutation"></a>
 **Mutation Semantics (What Changes, What Doesn’t)**
@@ -104,7 +106,7 @@ Key points about globals
 <a id="scoping"></a>
 **Scoping & Performance Notes**
 - Context slot: All rules are context‑safe — they only read/write facts with a consistent `context`.
-- `linked` implementation: apps may override generic `linked` to compute adjacencies from structure (e.g., Sudoku `linked` delegates to `labels-linked`): `SudoRules-V20.1/GENERAL/background.clp:484`–`:492`. This avoids heavy dependence on caches.
+- `linked` implementation: apps may override generic `linked` to compute adjacencies from structure (e.g., Sudoku `linked` delegates to `labels-linked`): `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/background.clp`. This avoids heavy dependence on caches.
 - SPEED vs MEMORY chains: globals select which chain implementation directory is loaded and thus affect transient chain facts and performance.
 
 <a id="observe"></a>

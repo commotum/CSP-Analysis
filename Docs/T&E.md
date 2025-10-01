@@ -16,6 +16,8 @@
 
 This notes how T&E works in CSP‑Rules: what it does, the data it uses, and how it stays integrated with the same rule engine (no separate solver).
 
+Reference note: Pointers use file paths and named symbols, not line numbers, to keep this doc stable across revisions.
+
 **What T&E Is (Plain)**
 - Hypothesize a candidate as true in a child “context”, run the normal rules, and see if that leads to a contradiction. If it does, the hypothesis is impossible, so the candidate is eliminated in the parent. If not, discard the temporary context and try the next hypothesis.
 - Depth 1 tries one hypothesis at a time; higher depths nest hypotheses. DFS is the same idea but pursues a search branch until a solution or contradiction.

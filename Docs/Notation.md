@@ -16,6 +16,8 @@
 
 This guide explains how CSP‑Rules formats its console output when verbosity is high, and where the helper functions live. It also decodes the notation for pattern‑based reasoning lines (chains, whips, braids), which follow a single stream of reasoning per pattern.
 
+Reference note: Pointers use file paths and named symbols, not line numbers, to avoid drift across versions.
+
 **Where Output Is Implemented**
 - Generic helpers
   - Chain and candidate printing: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/generic-output.clp`

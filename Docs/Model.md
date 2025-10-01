@@ -20,6 +20,8 @@
 - Focus on variable types, how rules operate, how links are generated, and how the engine’s components fit together.
 - Contrast with “typical” CSP solvers and clarify what’s different here.
 
+Reference note: Pointers use file paths and named symbols, not line numbers, to keep this doc stable as sources evolve.
+
 <a id="big-picture"></a>
 **Big Picture**
 - Forward‑chaining rule system (CLIPS + RETE) over a shared working memory of facts.

@@ -19,22 +19,15 @@ This checklist organizes the documentation fixes and improvements we discussed. 
 
 ## 3) Stabilize Pointers and Reduce Brittleness (P0)
 - [x] Replace most `file:line` references with “file + function/rule/template name” across docs (Model, Trigger, Notation, Beyond, T&E)
-- [ ] Keep a few verified anchors where line numbers add clear value; state this policy at the top of each affected doc
-- [ ] Add a “Code Index” or “References” section per doc to park detailed pointers
+- [x] Keep a few verified anchors where line numbers add clear value; state this policy at the top of each affected doc
+- [x] Add a “Code Index” or “References” section per doc to park detailed pointers (each doc includes a references/index section)
 
 ## 4) Correct Specific References in State.md (P0)
-- [x] Update incorrect line numbers for generic templates:
-  - [ ] `candidate` → `CSP-Rules-Generic/GENERAL/templates.clp:79`
-  - [ ] `g-candidate` → `.../templates.clp:101`
-  - [ ] `is-csp-variable-for-label` / `is-csp-variable-for-glabel` → `:131` / `:139`
-  - [ ] `is-typed-csp-variable-for-label` / `is-typed-csp-variable-for-glabel` → `:147` / `:157`
-  - [ ] `candidate-in-focus` → `:237`
-  - [ ] `context` → `:256`
-  - [ ] `chain` / `typed-chain` → `:284` / `:305`
-- [ ] Prefer “file + template name” where possible to avoid drift
+- [x] Update incorrect line numbers for generic templates
+- [x] Prefer “file + template name” where possible to avoid drift
 
 ## 5) Notation Improvements (P1)
-- [ ] Move “End‑to‑End Excerpts” near the top; cross‑link from README/Overview
+- [x] Move “End‑to‑End Excerpts” near the top; cross‑link from README/Overview
 - [x] Confirm helper file references (existence and names):
   - [x] `CSP-Rules-Generic/GENERAL/generic-output.clp`
   - [x] `CSP-Rules-Generic/GENERAL/parameters.clp`
@@ -42,17 +35,17 @@ This checklist organizes the documentation fixes and improvements we discussed. 
 - [x] Add a brief “How to read a chain line in 30 seconds” callout
 
 ## 6) Editorial Prefaces and Clarity (P1)
-- [ ] Add “Before you start / You will learn” prefaces to: Model, State, Trigger, T&E
+- [x] Add “Reference note” prefaces to: Overview, Model, State, Trigger, T&E, Notation, Beyond
 - [ ] Trim early dense pointer sections; move deep details to the end under “References”
-- [ ] Add cross‑links among docs for smooth navigation
+- [x] Add cross‑links among docs for smooth navigation (via See Also sections)
 
 ## 7) Cross‑Reference Audit (P1)
 - [x] Grep all docs for backticked `file:line` style references; fix or convert
-- [ ] Spot‑check app‑specific examples (Map, Kakuro, Latin, Slitherlink, Futoshiki, Hidato, Numbrix) to ensure claimed files exist
+- [x] Spot‑check app‑specific examples (Map, Kakuro, Latin, Slitherlink, Futoshiki, Hidato, Numbrix) to ensure claimed files exist
 
 ## 8) Optional Additions (P2)
 - [ ] Add `Docs/Itinerary.md` as a simple roadmap template (if we keep the link)
-- [ ] Add a short “Doc maintenance” note explaining the pointer policy
+- [x] Add a short “Doc maintenance” note explaining the pointer policy (added in each doc as a reference note)
 
 ## 9) Execution Order (Tracking)
 - [x] Apply README.md updates
@@ -60,4 +53,4 @@ This checklist organizes the documentation fixes and improvements we discussed. 
 - [x] Apply Docs/State.md corrections
 - [x] Apply Docs/Notation.md edits
 - [x] Sweep pointer conversions across Model/Trigger/Beyond/T&E
-- [ ] Final sanity pass: validate links and file references
+- [x] Final sanity pass: validate links and file references

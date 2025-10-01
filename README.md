@@ -5,7 +5,7 @@ This workspace collects analysis and guides for understanding CSP‑Rules and it
 ## Docs — Start Here
 
 - [Overview](Docs/Overview.md) — Architecture at a glance, directory map, how to load and use modules.
-- [Notation](Docs/Notation.md) — How to read output quickly (chains, whips, braids) and real excerpts.
+- [Notation](Docs/Notation.md#quickstart) — How to read output quickly (chains, whips, braids) and real excerpts.
 - [Model](Docs/Model.md) — Mental model and public API: variables, labels, links, chains.
 - [State](Docs/State.md) — What “state” means: facts (candidates, csp‑vars, links) + globals (toggles, counters, caches).
 - [Trigger (Pattern Taxonomy)](Docs/Trigger.md) — Scope → Trigger → Action mental model and a taxonomy of pattern families.

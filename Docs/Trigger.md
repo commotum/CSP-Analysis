@@ -14,6 +14,8 @@
 
 This document explains how every rule fits a simple Scope → Trigger → Action mental model, and organizes the main pattern families (a taxonomy) you’ll find in CSP‑Rules.
 
+Reference note: Pointers use file paths and named symbols, not line numbers, to keep references stable.
+
 **Mental Model (Scope → Trigger → Action)**
 - Scope (what we look at)
   - A bounded set of facts: candidates/csp‑variables inside a unit (row/col/block), a sector/run, or along link‑reachable candidates (chains). For chain families, scope is the local subgraph built from `csp-linked`/`exists-link` (and optionally `exists-glink`).

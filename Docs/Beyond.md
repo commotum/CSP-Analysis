@@ -12,6 +12,7 @@
 **Beyond Binary: How CSP‑Rules Encodes Non‑Binary Constraints**
 
 **Idea At A Glance**
+- Reference note: Pointers use file paths and named symbols, not line numbers, to avoid drift across versions.
 - Model every global/non‑binary constraint by introducing extra, typed CSP variables whose domains enumerate the local choices that must be mutually exclusive.
 - Connect those typed variables to the concrete candidate labels via `is-csp-variable-for-label` facts; then assert pairwise contradiction links (`csp-linked`) between labels that share the same typed variable.
 - Optionally add non‑csp links (`exists-link`) for relational constraints that aren’t “exactly‑one” (e.g., inequalities, adjacency, distance).
