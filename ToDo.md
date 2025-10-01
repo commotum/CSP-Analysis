@@ -36,7 +36,7 @@ This checklist organizes the documentation fixes and improvements we discussed. 
 
 ## 6) Editorial Prefaces and Clarity (P1)
 - [x] Add “Reference note” prefaces to: Overview, Model, State, Trigger, T&E, Notation, Beyond
-- [ ] Trim early dense pointer sections; move deep details to the end under “References”
+- [x] Trim early dense pointer sections; move deep details to the end under “References/Index”
 - [x] Add cross‑links among docs for smooth navigation (via See Also sections)
 
 ## 7) Cross‑Reference Audit (P1)
