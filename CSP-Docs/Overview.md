@@ -269,3 +269,10 @@ Key refs: generic templates `CSP-Rules-Generic/GENERAL/templates.clp`, Sudoku ba
 Notes
 - Use examples to mirror technique‑specific presets (e.g., Subsets‑only, Tridagons, controlled‑bias cbg settings).
 - Watchers like `(watch rules/facts)` are useful for ad‑hoc investigation but keep them off for performance.
+
+
+
+
+Your solver already uses the right building blocks (boolean candidate tensor, batch dimension, vectorized reductions, slices). Extend that to chains by treating the chain frontier as a batch of “parallel contexts,” and to T&E by treating hypotheses as a batch
+  over candidate masks.
+  - You don’t need matmul/einsum or bitsets if you prefer booleans; broadcasting + axis‑wise sums will get you there.
