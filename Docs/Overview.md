@@ -29,7 +29,8 @@ Reference note: Pointers in this guide use file paths and named symbols instead 
 - Generic Core
   - Loader orchestrates generic modules and then batches the active application loader: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/CSP-Rules-Generic-Loader.clp`.
   - Templates (data contracts), runtime globals, solve loop and salience scheduling: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/templates.clp`, `.../globals.clp`, `.../solve.clp`, `.../saliences.clp`.
-  - Link initialization and play loop: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/init-links.clp`, `.../play.clp`.
+- Link initialization and play loop: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/init-links.clp`, `.../play.clp`.
+  See also: graph structure and initialization — [Graphs](Graphs.md).
   - Chains and variants (common/exotic; speed/memory): `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/CHAIN-RULES-*/*`.
   - T&E + DFS augmentations: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/T&E+DFS/`.
 - Applications (example: Sudoku)
@@ -206,6 +207,7 @@ Rating Types — Derived from generic and app settings (`CSP-Rules-Generic/GENER
 
 **See Also**
 - Model: conceptual API and objects — [Model](Model.md)
+- Graphs: nodes/edges, build, pruning — [Graphs](Graphs.md)
 - State: facts + globals and lifecycle — [State](State.md)
 - Pattern taxonomy: Scope → Trigger → Action — [Trigger](Trigger.md)
 - Notation and real traces — [Notation](Notation.md)
