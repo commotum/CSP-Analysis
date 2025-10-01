@@ -27,8 +27,8 @@ This document explains how every rule fits a simple Scope → Trigger → Action
 
 Execution pipeline and gating
 - Phases (by salience):
-  1) BRT (Singles + ECP), 2) init‑links (compute `csp-linked`/`exists-link`), 3) play (chains, subsets, uniqueness, exotic), optionally 4) T&E/DFS. Pointers: `CSP-Rules-Generic/GENERAL/solve.clp`, `.../saliences.clp:448`, `.../play.clp`.
-- Families are enabled or blocked via globals (e.g., `?*Whips*`, `?*Subsets*`, `?*blocked-chains*`). Pointers: `CSP-Rules-Generic/GENERAL/globals.clp:378`–`:579`.
+  1) BRT (Singles + ECP), 2) init‑links (compute `csp-linked`/`exists-link`), 3) play (chains, subsets, uniqueness, exotic), optionally 4) T&E/DFS. Pointers: `CSP-Rules-Generic/GENERAL/solve.clp`, `.../saliences.clp`, `.../play.clp`.
+- Families are enabled or blocked via globals (e.g., `?*Whips*`, `?*Subsets*`, `?*blocked-chains*`). Pointers: `CSP-Rules-Generic/GENERAL/globals.clp`.
 
 <a id="taxonomy"></a>
 **Taxonomy (Pattern Families)**
@@ -45,7 +45,7 @@ Execution pipeline and gating
 - Contradiction Detection (structural)
   - Scope: a csp‑variable and its mapped labels.
   - Trigger: no candidate left (used in T&E/DFS and to validate solutions in DFS).
-  - Action: eliminate a hypothesis in parent context (T&E), or assert solution found (DFS). Files: `T&E+DFS/T&E1.clp:86`, `DFS.clp:150`.
+- Action: eliminate a hypothesis in parent context (T&E), or assert solution found (DFS). Files: `T&E+DFS/T&E1.clp`, `DFS.clp`.
 
 2) Subset‑Style (Set‑Based) Patterns (Application Layer)
 - Scope: labels inside a unit/run/sector or app‑specific grouping.
@@ -72,7 +72,7 @@ Execution pipeline and gating
   - Braids
   - Typed variants (restrict to chosen `csp-var-type`s), and speed/memory variants.
 - Typed chains (2D, per app typing):
-  - Restrict chain steps to specific `csp-var-type` (e.g., Sudoku 2D chains). Requires `is-typed-csp-variable-for-label` and app `csp-var-type` mapping. Templates at `CSP-Rules-Generic/GENERAL/templates.clp:152`.
+  - Restrict chain steps to specific `csp-var-type` (e.g., Sudoku 2D chains). Requires `is-typed-csp-variable-for-label` and app `csp-var-type` mapping. Templates in `CSP-Rules-Generic/GENERAL/templates.clp`.
 - Bi‑Chains (Contradiction chains):
   - Bi‑whips/Bi‑braids derive eliminations from contradiction ends; see bi‑TE and contradiction‑chain scaffolding in templates.
 
@@ -80,9 +80,9 @@ Execution pipeline and gating
 - Scope: ordinary link graph plus a named ORk relation (e.g., Tridagon); rule instances thread before/after the OR fragment.
 - Trigger: an allowed ORk relation on k candidates combined with pre/post chain segments meeting typed/untyped semantics.
 - Action: targeted eliminations or assertions (Forcing vs Contrad variants).
-- Generic dirs: `CSP-Rules-Generic/CHAIN-RULES-EXOTIC/*` (e.g., `OR2-Whips`, partial OR3 g‑whips). ORk templates: `CSP-Rules-Generic/GENERAL/templates.clp:433`.
+- Generic dirs: `CSP-Rules-Generic/CHAIN-RULES-EXOTIC/*` (e.g., `OR2-Whips`, partial OR3 g‑whips). ORk templates: `CSP-Rules-Generic/GENERAL/templates.clp`.
 - App‑level OR relations:
-  - Sudoku Tridagons and anti‑tridagons (modules under `SudoRules-V20.1/MODULES/TRID-*`); flags in `SudoRules-V20.1/GENERAL/globals.clp:286+`.
+  - Sudoku Tridagons and anti‑tridagons (modules under `SudoRules-V20.1/MODULES/TRID-*`); flags in `SudoRules-V20.1/GENERAL/globals.clp`.
 
 5) Uniqueness / Deadly Patterns (Application Layer)
 - Scope: configurations that would lead to multiple solutions (deadly rectangles/patterns, BUG states).
@@ -132,21 +132,21 @@ Execution pipeline and gating
 - The major families above cover the solver’s public resolution theory. Additional domain‑specific helpers (e.g., sector combinatorics in Kakuro) and exotic modules (Oddagon/Tridagon‑based) fit under Subset/Chain/ORk umbrellas. Search augmentations (T&E/DFS) are control strategies, not resolution patterns, but they reuse the same Scope→Trigger→Action rules inside child contexts.
 
 <a id="quickref"></a>
-**Quick Reference**
-- BRT/ECP — per csp‑variable | immediate conflicts from givens/structure | eliminate candidates; assert forced values | CSP-Rules-Generic/GENERAL/ECP.clp:1, .../Single.clp:1
-- Singles (NS/HS) — unit (row/col/block) | only place for a number / only value in a cell | set `c-value` | SudoRules-V20.1/GENERAL/NS.clp:1, HS.clp:1
-- Subsets (Naked/Hidden) — unit | k cells ↔ k digits (or hidden variant) | eliminate peers’ digits in unit | SudoRules-V20.1/SUBSETS/N2-*.clp, H2-*.clp
-- Fish (X‑/Sword‑/Jellyfish) — rows×cols pattern | aligned cover sets | eliminate candidates in fins/columns/rows | SudoRules-V20.1/SUBSETS/SH2-x-wing.clp:1, SH3-swordfish.clp:1, SH4-jellyfish.clp:1
-- Chains (Whips/t‑Whips) — link graph (`csp-linked`/`exists-link`) | alternating chain length n from target to contradiction | eliminate target | CSP-Rules-Generic/CHAIN-RULES-SPEED/WHIPS/*
-- g‑Whips — link+glink graph | alternating chain using g‑candidates | eliminate target | CSP-Rules-Generic/CHAIN-RULES-*/G-WHIPS/*, init-glinks SudoRules-V20.1/GENERAL/init-glinks.clp:22
-- Braids — link graph | braid support variant reaching contradiction | eliminate target | CSP-Rules-Generic/CHAIN-RULES-*/BRAIDS/*
-- Typed Chains (2D) — link graph with `csp-var-type` | chain constrained to chosen types | eliminate target | typed templates CSP-Rules-Generic/GENERAL/templates.clp:152, app `csp-var-type`
-- ORk/Forcing Chains — link graph + ORk relation | valid OR fragment + pre/post chains | eliminate or assert (forcing) | CSP-Rules-Generic/CHAIN-RULES-EXOTIC/*, SudoRules-V20.1/MODULES/TRID-*
-- Uniqueness/Deadly — unit/block rectangles/patterns | deadly rectangle/BUG/DP structure | eliminate guardians or assert | SudoRules-V20.1/UNIQUENESS/UR*.clp, BUG.clp, Deadly-Patterns/*
-- Kakuro Sectors — run (horiz/verti) | sum combinations/compatible digits | prune cells/digits | KakuRules-V2.1/GENERAL/glabels.clp:60, solve.clp:360
-- Futoshiki Inequalities — row/col | inequality arcs + AllDifferent | prune by order constraints | FutoRules-V2.1/GENERAL/background.clp:318, :339
-- Map Neighbourhood — countries | same‑colour on adjacent countries | eliminate same‑colour neighbours | MapRules-V2.1/GENERAL/init-links.clp:38
-- Slitherlink Degree/Loop — edges/vertices | degree/loop constraints per type | prune edge states | SlitherRules-V2.1/GENERAL/S.clp:61, init-links.clp:60
+-**Quick Reference**
+- BRT/ECP — per csp‑variable | immediate conflicts from givens/structure | eliminate candidates; assert forced values | `CSP-Rules-Generic/GENERAL/ECP.clp`, `.../Single.clp`
+- Singles (NS/HS) — unit (row/col/block) | only place for a number / only value in a cell | set `c-value` | `SudoRules-V20.1/GENERAL/NS.clp`, `HS.clp`
+- Subsets (Naked/Hidden) — unit | k cells ↔ k digits (or hidden variant) | eliminate peers’ digits in unit | `SudoRules-V20.1/SUBSETS/N2-*.clp`, `H2-*.clp`
+- Fish (X‑/Sword‑/Jellyfish) — rows×cols pattern | aligned cover sets | eliminate candidates in fins/columns/rows | `SudoRules-V20.1/SUBSETS/SH2-x-wing.clp`, `SH3-swordfish.clp`, `SH4-jellyfish.clp`
+- Chains (Whips/t‑Whips) — link graph (`csp-linked`/`exists-link`) | alternating chain length n from target to contradiction | eliminate target | `CSP-Rules-Generic/CHAIN-RULES-SPEED/WHIPS/*`
+- g‑Whips — link+glink graph | alternating chain using g‑candidates | eliminate target | `CSP-Rules-Generic/CHAIN-RULES-*/G-WHIPS/*`, init-glinks `SudoRules-V20.1/GENERAL/init-glinks.clp`
+- Braids — link graph | braid support variant reaching contradiction | eliminate target | `CSP-Rules-Generic/CHAIN-RULES-*/BRAIDS/*`
+- Typed Chains (2D) — link graph with `csp-var-type` | chain constrained to chosen types | eliminate target | typed templates `CSP-Rules-Generic/GENERAL/templates.clp`, app `csp-var-type`
+- ORk/Forcing Chains — link graph + ORk relation | valid OR fragment + pre/post chains | eliminate or assert (forcing) | `CSP-Rules-Generic/CHAIN-RULES-EXOTIC/*`, `SudoRules-V20.1/MODULES/TRID-*`
+- Uniqueness/Deadly — unit/block rectangles/patterns | deadly rectangle/BUG/DP structure | eliminate guardians or assert | `SudoRules-V20.1/UNIQUENESS/UR*.clp`, `BUG.clp`, `Deadly-Patterns/*`
+- Kakuro Sectors — run (horiz/verti) | sum combinations/compatible digits | prune cells/digits | `KakuRules-V2.1/GENERAL/glabels.clp`, `solve.clp`
+- Futoshiki Inequalities — row/col | inequality arcs + AllDifferent | prune by order constraints | `FutoRules-V2.1/GENERAL/background.clp`
+- Map Neighbourhood — countries | same‑colour on adjacent countries | eliminate same‑colour neighbours | `MapRules-V2.1/GENERAL/init-links.clp`
+- Slitherlink Degree/Loop — edges/vertices | degree/loop constraints per type | prune edge states | `SlitherRules-V2.1/GENERAL/S.clp`, `init-links.clp`
 
 <a id="see"></a>
 **See Also**

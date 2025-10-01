@@ -30,12 +30,12 @@
 <a id="core"></a>
 **Core Data Model**
 - Generic templates
-  - `candidate` — atomic candidates with status and label; holds context and flags. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/templates.clp:79`
-  - `g-candidate` — grouped candidate abstraction for g‑chains. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/templates.clp:101`
-  - `csp-variable` — structural variables (typed later by each app). `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/templates.clp:123`
+  - `candidate` — atomic candidates with status and label; holds context and flags. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/templates.clp`
+  - `g-candidate` — grouped candidate abstraction for g‑chains. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/templates.clp`
+  - `csp-variable` — structural variables (typed later by each app). `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/templates.clp`
 - Application templates (Sudoku example)
-  - Extends `candidate` with Sudoku slots: `number`, `row`, `column`, `block`, `square`, `band`, `stack`. `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/templates.clp:22`
-  - Extends `g-candidate` with typed metadata: `type`, `row/column` segments, `block`. `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/templates.clp:41`
+  - Extends `candidate` with Sudoku slots: `number`, `row`, `column`, `block`, `square`, `band`, `stack`. `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/templates.clp`
+  - Extends `g-candidate` with typed metadata: `type`, `row/column` segments, `block`. `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/templates.clp`
 - Facts without explicit templates (ordered facts)
   - `csp-linked`, `exists-link` between labels; `csp-glinked`, `exists-glink` for grouped links. Asserted during init‑links/glinks.
   - `context` and `technique` facts orchestrate phases and track the current rule family.
@@ -44,46 +44,46 @@
 **Labels, Typed Variables, and Links**
 - Labels and typed CSP variables (Sudoku)
   - Typed variables derive from structure (rows/columns/blocks):
-    - `row-number-to-rn-variable` `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/background.clp:239`
-    - `column-number-to-cn-variable` `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/background.clp:243`
-    - `block-number-to-bn-variable` `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/background.clp:247`
-  - Label encoding for (number,row,column): `nrc-to-label` `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/background.clp:294`
+    - `row-number-to-rn-variable` — `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/background.clp`
+    - `column-number-to-cn-variable` — `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/background.clp`
+    - `block-number-to-bn-variable` — `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/background.clp`
+  - Label encoding for (number,row,column): `nrc-to-label` — `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/background.clp`
 - Declarative link predicates (app‑level)
-  - `labels-linked-by` (by CSP variable type) `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/background.clp:407`
-  - `labels-linked` (any applicable constraint) `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/background.clp:430`
+  - `labels-linked-by` (by CSP variable type) — `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/background.clp`
+  - `labels-linked` (any applicable constraint) — `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/background.clp`
   - These are used both in ECP and for init‑links to derive effective links.
 - Effective links creation (generic)
   - Activates after BRT via salience: asserts logical facts for links and counts density.
-  - `init-effective-csp-links` asserts `csp-linked` facts for labels sharing a typed `csp-variable`. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/init-links.clp:78`
-  - `init-effective-non-csp-links` asserts `exists-link` for any pair where `labels-linked` holds. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/init-links.clp:102`
-  - For g‑links (Sudoku): `csp-glinked` and `exists-glink` from candidates to `g-candidate` labels. `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/init-glinks.clp:61`
+  - `init-effective-csp-links` asserts `csp-linked` facts for labels sharing a typed `csp-variable`. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/init-links.clp`
+  - `init-effective-non-csp-links` asserts `exists-link` for any pair where `labels-linked` holds. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/init-links.clp`
+  - For g‑links (Sudoku): `csp-glinked` and `exists-glink` from candidates to `g-candidate` labels. `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/init-glinks.clp`
 - Link sets as globals (fast lookup)
-  - `add-link` and `add-glink` push pairs into `?*links*` / `?*glinks*` and update counts. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/generic-background.clp:230`, `:273`
-  - Density computed from candidate and link counts when `play` begins. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/play.clp:42`
+  - `add-link` and `add-glink` push pairs into `?*links*` / `?*glinks*` and update counts. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/generic-background.clp`
+  - Density computed from candidate and link counts when `play` begins. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/play.clp`
 
 <a id="phases"></a>
 **Phases and Scheduling**
 - Solve loop (generic model)
-  - `solve` initialises globals and app structures, asserts `(context (name 0))`, runs the engine, and prints times. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/solve.clp:93`
-  - BRT (Singles + ECP) fires first in context 0; after BRT, `init-links` runs; then `(play)` starts non‑trivial rules per salience. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/play.clp:21`
+  - `solve` initialises globals and app structures, asserts `(context (name 0))`, runs the engine, and prints times. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/solve.clp`
+  - BRT (Singles + ECP) fires first in context 0; after BRT, `init-links` runs; then `(play)` starts non‑trivial rules per salience. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/play.clp`
 - Salience definitions coordinate orderings
-  - Generic saliences include pre/post BRT, `init-links`, and subsequent phases. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/saliences.clp:448`
-  - Apps may adjust saliences; Sudoku has its own `GENERAL/saliences.clp`. `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/saliences.clp:1`
+  - Generic saliences include pre/post BRT, `init-links`, and subsequent phases. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/saliences.clp`
+  - Apps may adjust saliences; Sudoku has its own `GENERAL/saliences.clp`. `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/saliences.clp`
 - Technique tracking
   - Many rules assert `(technique ?cont <name>)` and set `?*technique*` for reporting. Rules also decrement `?*nb-candidates*` when eliminating candidates.
 
 <a id="families"></a>
 **Rule Families (Resolution Theory)**
 - BRT — Basic Resolution Theory
-  - ECP (Elementary Constraint Propagation) uses `labels-linked` to prune. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/ECP.clp:1`
-  - Singles: generic scaffolding and app NS/HS implementations (Sudoku). `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/NS.clp:1`, `.../HS.clp:1`
+  - ECP (Elementary Constraint Propagation) uses `labels-linked` to prune. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/ECP.clp`
+  - Singles: generic scaffolding and app NS/HS implementations (Sudoku). `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/NS.clp`, `.../HS.clp`
 - Chains (generic families)
-  - Bivalue, z‑chains, t‑whips, whips, g‑whips, braids; speed/memory variants. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/CHAIN-RULES-SPEED:1`, `.../CHAIN-RULES-MEMORY:1`
-  - Exotic ORk variants (forcing/contrad) extend chain reasoning. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/CHAIN-RULES-EXOTIC:1`
+  - Bivalue, z‑chains, t‑whips, whips, g‑whips, braids; speed/memory variants. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/CHAIN-RULES-SPEED`, `.../CHAIN-RULES-MEMORY`
+  - Exotic ORk variants (forcing/contrad) extend chain reasoning. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/CHAIN-RULES-EXOTIC`
 - Application‑specific families
-  - Sudoku: `SUBSETS/` (Pairs/Triplets/Fish), `UNIQUENESS/` (URs, BUG, Deadly Patterns), `EXOTIC/`, `GOODIES/`, etc. `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/SUBSETS:1`
+  - Sudoku: `SUBSETS/` (Pairs/Triplets/Fish), `UNIQUENESS/` (URs, BUG, Deadly Patterns), `EXOTIC/`, `GOODIES/`, etc. `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/SUBSETS`
 - Search augmentations
-  - T&E(n) and DFS integrated into the same rule framework. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/T&E+DFS:1`
+  - T&E(n) and DFS integrated into the same rule framework. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/T&E+DFS`
 
 <a id="abstract"></a>
 **Abstract Data Structure**
@@ -91,37 +91,37 @@
   - Template facts: `candidate`, `g-candidate`, `csp-variable`, and app‑specific templates.
   - Ordered facts: `csp-linked`, `exists-link`, `csp-glinked`, `exists-glink`, `context`, `technique`, etc.
 - Global State (defglobals)
-  - Configuration/feature flags (enable families, set max lengths, print options). `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/globals.clp:448`
-  - Performance counters (`?*nb-candidates*`, `?*links-count*`, `?*glinks-count*`, density). `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/globals.clp:98`
-  - Link caches: `?*links*`, `?*glinks*` as pair lists for fast membership checks in chain rules. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/generic-background.clp:210`
+  - Configuration/feature flags (enable families, set max lengths, print options). `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/globals.clp`
+  - Performance counters (`?*nb-candidates*`, `?*links-count*`, `?*glinks-count*`, density). `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/globals.clp`
+  - Link caches: `?*links*`, `?*glinks*` as pair lists for fast membership checks in chain rules. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/generic-background.clp`
 - RETE Network
   - Rules (defrule) compile into a RETE network; pattern matches over facts drive eliminations/assertions without explicit control flow.
 
 <a id="api"></a>
 **Public API Surface**
 - Load order (REPL)
-  - Load a per‑app config; it defines `?*CSP-Rules*`, computes directories, loads generic/app globals, and batches loaders. `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1-config.clp:49`, `:87`, `:90`, `:890`
+  - Load a per‑app config; it defines `?*CSP-Rules*`, computes directories, loads generic/app globals, and batches loaders. `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1-config.clp`
 - Generic entry (size + list)
-  - `(solve <size> <args...>)` initialises and runs the engine, printing times if enabled. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/solve.clp:125`
+  - `(solve <size> <args...>)` initialises and runs the engine, printing times if enabled. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/solve.clp`
 - Sudoku convenience functions (examples)
-  - Strings/grids/lists: `solve`, `solve-sudoku-string`, `solve-sudoku-grid`, `solve-sudoku-list`. `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/solve.clp:500`, `:469`, `:1184`, `:861`
-  - File/batch: `solve-grid-from-text-file`, `solve-n-th...`, `solve-sdk-grid`. `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/solve-files.clp:63`, `:99`, `:430`
+  - Strings/grids/lists: `solve`, `solve-sudoku-string`, `solve-sudoku-grid`, `solve-sudoku-list`. `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/solve.clp`
+  - File/batch: `solve-grid-from-text-file`, `solve-n-th...`, `solve-sdk-grid`. `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/solve-files.clp`
 - Preferences
-  - `(solve-w-preferences ...)` delegates to `solve` but allows pref ordering; used in some examples. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/MODULES/modules.clp:98`
+  - `(solve-w-preferences ...)` delegates to `solve` but allows pref ordering; used in some examples. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/MODULES/modules.clp`
 
 <a id="config"></a>
 **Configuration and Feature Flags**
-- Chain implementation mode: `?*chain-rules-optimisation-type*` = `SPEED` or `MEMORY`. Default is SPEED. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/globals.clp:360`
-- Enable/disable families: `?*Subsets*`, `?*Whips*`, `?*Braids*`, typed/g‑variants, ORk options. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/globals.clp:399`, `:448`
-- Max lengths per family: whips/braids/typed/g/forcing/ORk. `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/ADVANCED/disable-re-enable-rules.clp:344`
-- App‑specific toggles (Sudoku): `?*FinnedFish*`, `?*Unique-Rectangles*`, `?*BUG*`, `?*Deadly-Patterns*`, Tridagons, etc. `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/globals.clp:113`, `:119`, `:156`
-- Print options: `?*print-actions*`, `?*print-levels*`, `?*print-solution*`, summaries after Singles/final RS. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/globals.clp:1801`
+- Chain implementation mode: `?*chain-rules-optimisation-type*` = `SPEED` or `MEMORY`. Default is SPEED. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/globals.clp`
+- Enable/disable families: `?*Subsets*`, `?*Whips*`, `?*Braids*`, typed/g‑variants, ORk options. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/globals.clp`
+- Max lengths per family: whips/braids/typed/g/forcing/ORk. `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/ADVANCED/disable-re-enable-rules.clp`
+- App‑specific toggles (Sudoku): `?*FinnedFish*`, `?*Unique-Rectangles*`, `?*BUG*`, `?*Deadly-Patterns*`, Tridagons, etc. `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/globals.clp`
+- Print options: `?*print-actions*`, `?*print-levels*`, `?*print-solution*`, summaries after Singles/final RS. `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/globals.clp`
 
 <a id="links"></a>
 **How Links Drive Rules**
 - Chain rules and many app rules match on `exists-link`/`csp-linked`/`exists-glink` to walk adjacency among candidates and g‑candidates.
 - Typed reasoning leverages `csp-linked` with specific typed variables, while general reasoning uses `exists-link`.
-- g‑chains rely on `exists-glink` plus app‑specific grouping of labels into `g-candidate`s (e.g., row/column segments in Sudoku). `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/init-glinks.clp:22`
+- g‑chains rely on `exists-glink` plus app‑specific grouping of labels into `g-candidate`s (e.g., row/column segments in Sudoku). `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/init-glinks.clp`
 
 <a id="compare"></a>
 **How CSPs Normally Work vs CSP‑Rules**
@@ -146,15 +146,15 @@
 
 <a id="files"></a>
 **File Pointers (Quick Index)**
-- Generic templates: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/templates.clp:79`
-- Sudoku templates: `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/templates.clp:22`
-- Sudoku background (labels, rn/cn/bn, links): `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/background.clp:239`, `:294`, `:407`, `:430`
-- Generic init‑links: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/init-links.clp:49`
-- Sudoku init‑glinks: `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/init-glinks.clp:22`
-- Generic solve (model): `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/solve.clp:125`
-- Sudoku solve helpers: `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/solve.clp:469`, `:500`, `:861`, `:1184`
-- Salience setup: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/saliences.clp:448`
-- Chain families: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/CHAIN-RULES-SPEED:1`, `.../MEMORY:1`, `.../EXOTIC:1`
+- Generic templates: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/templates.clp`
+- Sudoku templates: `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/templates.clp`
+- Sudoku background (labels, rn/cn/bn, links): `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/background.clp`
+- Generic init‑links: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/init-links.clp`
+- Sudoku init‑glinks: `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/init-glinks.clp`
+- Generic solve (model): `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/solve.clp`
+- Sudoku solve helpers: `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/solve.clp` (`solve`, `solve-sudoku-string`, `solve-sudoku-list`, `solve-sudoku-grid`)
+- Salience setup: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/saliences.clp`
+- Chain families: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/CHAIN-RULES-SPEED`, `.../CHAIN-RULES-MEMORY`, `.../CHAIN-RULES-EXOTIC`
 
 <a id="see"></a>
 **See Also**

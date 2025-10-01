@@ -18,13 +18,13 @@ This guide explains how CSP‑Rules formats its console output when verbosity is
 
 **Where Output Is Implemented**
 - Generic helpers
-  - Chain and candidate printing: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/generic-output.clp:1`
-  - Print symbols and tokens (signs, braces, separators): `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/parameters.clp:39`
-  - Banners and timing: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/solve.clp:1` (`print-start-banner`, `print-banner`)
+  - Chain and candidate printing: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/generic-output.clp`
+  - Print symbols and tokens (signs, braces, separators): `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/parameters.clp`
+  - Banners and timing: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/solve.clp` (`print-start-banner`, `print-banner`)
 - Application overrides
-  - Sudoku NRC format (labels, pairs, csp‑var names): `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/nrc-output.clp:1`
-  - Latin Squares pretty grid output: `CSP-Rules/CSP-Rules-V2.1/LatinRules-V2.1/GENERAL/pretty-print.clp:86`
-  - Sudoku partial solution printing, summaries: `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/print-partial-sol.clp:34`, `.../record-results.clp:1`
+  - Sudoku NRC format (labels, pairs, csp‑var names): `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/nrc-output.clp`
+  - Latin Squares pretty grid output: `CSP-Rules/CSP-Rules-V2.1/LatinRules-V2.1/GENERAL/pretty-print.clp`
+  - Sudoku partial solution printing, summaries: `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/print-partial-sol.clp`, `.../record-results.clp`
 
 <a id="quickstart"></a>
 **Quick Start (Read Chains In 30 Seconds)**
@@ -45,37 +45,37 @@ See more in End‑to‑End Excerpts below.
 <a id="symbols"></a>
 **Core Symbols (Generic Defaults)**
 - Signs and separators (from `.../GENERAL/parameters.clp`)
-  - Implication: `?*implication-sign*` → ` ==> ` `CSP-Rules-Generic/GENERAL/parameters.clp:41`
-  - Link in chains: `?*link-symbol*` → ` - ` `CSP-Rules-Generic/GENERAL/parameters.clp:43`
-  - Start/End cell: `?*starting-cell-symbol*` → `{`, `?*ending-cell-symbol*` → `}` `CSP-Rules-Generic/GENERAL/parameters.clp:45`
-  - Inside cell separator: `?*separation-sign-in-cell*` → space `CSP-Rules-Generic/GENERAL/parameters.clp:47`
-  - Dot placeholder (final missing rlc): `?*dot-in-cell*` → `.` `CSP-Rules-Generic/GENERAL/parameters.clp:48`
-  - Non‑equal and equal: `?*non-equal-sign*` → `≠` `CSP-Rules-Generic/GENERAL/parameters.clp:40`, `?*equal-sign*` → `=` `:39`
+  - Implication: `?*implication-sign*` → ` ==> ` (see `.../parameters.clp`)
+  - Link in chains: `?*link-symbol*` → ` - `
+  - Start/End cell: `?*starting-cell-symbol*` → `{`, `?*ending-cell-symbol*` → `}`
+  - Inside cell separator: `?*separation-sign-in-cell*` → space
+  - Dot placeholder (final missing rlc): `?*dot-in-cell*` → `.`
+  - Non‑equal and equal: `?*non-equal-sign*` → `≠`, `?*equal-sign*` → `=`
 - Label tokens (short names)
-  - Number/Row/Column prefixes: `?*number-symbol*` = `n`, `?*row-symbol*` = `r`, `?*column-symbol*` = `c` `CSP-Rules-Generic/GENERAL/parameters.clp:69`
-  - Numeral prefix (often empty): `?*numeral-symbol*` (empty by default) `:68`
+  - Number/Row/Column prefixes: `?*number-symbol*` = `n`, `?*row-symbol*` = `r`, `?*column-symbol*` = `c`
+  - Numeral prefix (often empty): `?*numeral-symbol*` (empty by default)
 
 Applications adjust these as needed (e.g., Slitherlink sets additional loop link symbols; Kakuro prints run/sector descriptors).
 
 <a id="labels"></a>
 **Label And Cell Printing (Sudoku example)**
 - Label formatting (one candidate):
-  - Sudoku overrides `print-label` to print number+row+column short names: `5r2c9` `SudoRules-V20.1/GENERAL/nrc-output.clp:24`.
+  - Sudoku overrides `print-label` to print number+row+column short names: `5r2c9` (`SudoRules-V20.1/GENERAL/nrc-output.clp`).
 - Bivalue cell (two candidates in one CSP‑variable):
-  - Printed as `Block {val1 val2}` depending on CSP type (rc, rn, cn, bn). The value pair appears inside `{}` separated by a space: `nrc-output.clp:45` and `:69`.
+  - Printed as `Block {val1 val2}` depending on CSP type (rc, rn, cn, bn). The value pair appears inside `{}` separated by a space (see `nrc-output.clp`).
 - Final cell in non‑reversible chains (whips/braids):
-  - Printed with a dot for the missing last right‑linking candidate: `{val .}` `SudoRules-V20.1/GENERAL/nrc-output.clp:88`.
+  - Printed with a dot for the missing last right‑linking candidate: `{val .}` (`SudoRules-V20.1/GENERAL/nrc-output.clp`).
 
 <a id="chains"></a>
 **Chain/Whip/Braid Line Anatomy (Single Stream)**
 - Generic (reversible) chains (bivalue, g‑bivalue, oddagon):
-  - `biv-chain[n]: <cell1> - <cell2> - ... ==> not <label>` `CSP-Rules-Generic/GENERAL/generic-output.clp:113`
+  - `biv-chain[n]: <cell1> - <cell2> - ... ==> not <label>` (see `generic-output.clp`).
 - Generic (non‑reversible) chains (z‑chain, t‑whip, whip, braid, g‑whip):
-  - `whip[n]: <cell1> - ... - <final-cell{val .}> ==> not <label>` `CSP-Rules-Generic/GENERAL/generic-output.clp:299`, `:319`
+  - `whip[n]: <cell1> - ... - <final-cell{val .}> ==> not <label>` (see `generic-output.clp`).
 - Typed chains:
-  - `biv-chain-<type>[n]: ... ==> not <label>` (type = `rc`, `rn`, `cn`, etc.) `CSP-Rules-Generic/GENERAL/generic-output.clp:227`
+  - `biv-chain-<type>[n]: ... ==> not <label>` (type = `rc`, `rn`, `cn`, etc.) (see `generic-output.clp`).
 - ORk forcing/contrad variants:
-  - Multi‑branch sections are printed beneath a header with `||` to show the k subchains, yet the output is still one pattern instance producing one conclusion: `CSP-Rules-Generic/GENERAL/generic-output.clp:519`.
+  - Multi‑branch sections are printed beneath a header with `||` to show the k subchains, yet the output is still one pattern instance producing one conclusion (see `generic-output.clp`).
 
 Interpretation
 - Header: technique name and length, e.g., `whip[5]:`.
@@ -88,26 +88,26 @@ Interpretation
 **Other Notable Prints**
 - Resolution state snapshots
   - After Singles (optional): banner + “Resolution state after Singles” with counts and density. Triggered in `play.clp` if `?*print-RS-after-Singles*` is TRUE.
-  - Pretty grid dumps (Latin Squares): `LatinRules-V2.1/GENERAL/pretty-print.clp:86` via `pretty-print-current-resolution-state`.
-  - Sudoku partial grid prints: `SudoRules-V20.1/GENERAL/print-partial-sol.clp:34`.
+  - Pretty grid dumps (Latin Squares): `LatinRules-V2.1/GENERAL/pretty-print.clp` via `pretty-print-current-resolution-state`.
+  - Sudoku partial grid prints: `SudoRules-V20.1/GENERAL/print-partial-sol.clp`.
 - Banners and timing
-  - Start banner and end banner include app/version, engine, rating‑type, and machine descriptor; times printed as `init-time`, `solve-time`, `total-time` when `?*print-time*`/`?*print-actions*` are enabled. See `CSP-Rules-Generic/GENERAL/solve.clp:20` (`print-start-banner`, `print-banner`).
+  - Start banner and end banner include app/version, engine, rating‑type, and machine descriptor; times printed as `init-time`, `solve-time`, `total-time` when `?*print-time*`/`?*print-actions*` are enabled. See `CSP-Rules-Generic/GENERAL/solve.clp` (`print-start-banner`, `print-banner`).
 - Level/phase traces
   - When `?*print-levels*` is TRUE, rules announce entry into higher‑level families (e.g., “Entering_level_tridagon[12]”). These are family‑specific debug prints.
 
 <a id="helpers"></a>
 **Helper Functions Index (Generic)**
-- Print label/cell pairs: `print-label`, `print-bivalue-cell`, `print-final-cell` `CSP-Rules-Generic/GENERAL/generic-output.clp:30`, `:63`, `:280`
+- Print label/cell pairs: `print-label`, `print-bivalue-cell`, `print-final-cell` (`CSP-Rules-Generic/GENERAL/generic-output.clp`)
 - Print chain lines:
-  - Reversible: `print-bivalue-chain`, `print-g-bivalue-chain`, `print-oddagon` `generic-output.clp:135`, `:145`, `:171`
-  - Non‑reversible: `print-z-chain`, `print-t-whip`, `print-whip`, `print-braid`, `print-gwhip`, `print-gbraid` `generic-output.clp:317`–`:365`
-  - Typed variants: `print-typed-bivalue-chain`, etc. `generic-output.clp:236`–`:259`
-- Assertions/Eliminations: `print-asserted-candidate`, `print-deleted-candidate` `generic-output.clp:210`
-- ORk printing: `print-ORk-forcing-...` families `generic-output.clp:519`+
+  - Reversible: `print-bivalue-chain`, `print-g-bivalue-chain`, `print-oddagon` (see `generic-output.clp`)
+  - Non‑reversible: `print-z-chain`, `print-t-whip`, `print-whip`, `print-braid`, `print-gwhip`, `print-gbraid` (see `generic-output.clp`)
+- Typed variants: `print-typed-bivalue-chain`, etc. (see `generic-output.clp`)
+- Assertions/Eliminations: `print-asserted-candidate`, `print-deleted-candidate` (`generic-output.clp`)
+- ORk printing: `print-ORk-forcing-...` families (see `generic-output.clp`)
 
 **Helper Functions Index (Applications)**
-- Sudoku: `SudoRules-V20.1/GENERAL/nrc-output.clp:1` (overrides print‑label, bivalue/final cells, candidate assertions/elims), `SudoRules-V20.1/GENERAL/print-partial-sol.clp:34`, `SudoRules-V20.1/GENERAL/record-results.clp:1`
-- Latin Squares: `LatinRules-V2.1/GENERAL/pretty-print.clp:86`, `.../nrc-output.clp:1`
+- Sudoku: `SudoRules-V20.1/GENERAL/nrc-output.clp` (overrides print‑label, bivalue/final cells, candidate assertions/elims), `SudoRules-V20.1/GENERAL/print-partial-sol.clp`, `SudoRules-V20.1/GENERAL/record-results.clp`
+- Latin Squares: `LatinRules-V2.1/GENERAL/pretty-print.clp`, `.../nrc-output.clp`
 - Others (Futoshiki, Kakuro, Hidato, Slitherlink, Map) have their own nrc/pretty/print modules tuned to the domain; search for `nrc-output.clp`, `pretty-print`, or `print-partial-sol` under each app’s `GENERAL`.
 
 **Tips For Reading Traces**
@@ -119,10 +119,10 @@ Interpretation
 **Per‑Game Notation**
 
 Sudoku (SudoRules)
-- Label format: `<number><row><column>` e.g., `5r2c9` via `print-label` `SudoRules-V20.1/GENERAL/nrc-output.clp:24`.
+- Label format: `<number><row><column>` e.g., `5r2c9` via `print-label` (`SudoRules-V20.1/GENERAL/nrc-output.clp`).
 - CSP types in cells:
   - `rc`: `r2c9 {5 7}`; `rn`: `r2 n5 {c1 c9}`; `cn`: `c9 n5 {r2 r8}`; `bn`: `b3 n5 {r2c7 r2c8}`.
-- Eliminations and assertions: `r2c9 ≠ 5` and `r2c9 = 5` via `print-deleted-candidate`/`print-asserted-candidate` `SudoRules-V20.1/GENERAL/nrc-output.clp:111`, `:120` (uses `r/c/n` tokens from generic parameters).
+- Eliminations and assertions: `r2c9 ≠ 5` and `r2c9 = 5` via `print-deleted-candidate`/`print-asserted-candidate` (`SudoRules-V20.1/GENERAL/nrc-output.clp`) (uses `r/c/n` tokens from generic parameters).
 - Chain example: `whip[4]: r2c9 {5 7} - r2n5 {c1 c9} - c1n5 {r2 r7} - r7c1 {5 .} ==> not 5r2c9`.
 Examples
 - Chain: `whip[4]: r2c9 {5 7} - r2n5 {c1 c9} - c1n5 {r2 r7} - r7c1 {5 .} ==> r2c9 ≠ 5`
@@ -131,9 +131,9 @@ Examples
   Plain English: 4 at r3c7 conflicts with current constraints, so it’s removed.
 
 Latin Squares (LatinRules)
-- Label format: `<number><row><column>`; pretty grid printer for current state: `LatinRules-V2.1/GENERAL/pretty-print.clp:86`.
-- Additional diagonals (if pandiagonal enabled): `dn`/`an` appear in cells with diagonal identifiers: e.g., `D3 n5 {r2c3 r4c1}` `LatinRules-V2.1/GENERAL/nrc-output.clp:34`.
-- Eliminations/assertions: `r2c3 ≠ 7`, `r2c3 = 7` `LatinRules-V2.1/GENERAL/nrc-output.clp:109`, `:120`.
+- Label format: `<number><row><column>`; pretty grid printer for current state: `LatinRules-V2.1/GENERAL/pretty-print.clp`.
+- Additional diagonals (if pandiagonal enabled): `dn`/`an` appear in cells with diagonal identifiers: e.g., `D3 n5 {r2c3 r4c1}` (`LatinRules-V2.1/GENERAL/nrc-output.clp`).
+- Eliminations/assertions: `r2c3 ≠ 7`, `r2c3 = 7` (`LatinRules-V2.1/GENERAL/nrc-output.clp`).
 - Chains use same generic chain printers; cells show `rc/rn/cn` and optionally `dn/an` contexts.
 Examples
 - Chain (with diagonal): `z-chain[3]: r2c1 {5 7} - dn D3 n5 {r2c1 r4c3} - r4c3 {5 .} ==> r2c1 ≠ 5`
@@ -142,9 +142,9 @@ Examples
   Plain English: 3 at r5c6 contradicts unit/diagonal constraints, so it’s eliminated.
 
 Futoshiki
-- Label format: `<number><row><column>` (same as Latin); eliminations `r2c3 ≠ 7` via `FutoRules-V2.1/GENERAL/nrc-output.clp:109`.
+- Label format: `<number><row><column>` (same as Latin); eliminations `r2c3 ≠ 7` via `FutoRules-V2.1/GENERAL/nrc-output.clp`.
 - Inequality prints and ordered‑chain helpers for monotonicity constraints:
-  - Ascending/descending/hill/valley lines: `asc[k]: r2c1 < r2c2 < ... ==>`, `desc[k]: ... ==>`, `hill[k]: ... > ... ==>`, `valley[k]: ... < ... ==>`. Printers in `FutoRules-V2.1/GENERAL/nrc-output.clp:167`–`:231`.
+  - Ascending/descending/hill/valley lines: `asc[k]: r2c1 < r2c2 < ... ==>`, `desc[k]: ... ==>`, `hill[k]: ... > ... ==>`, `valley[k]: ... < ... ==>`. Printers in `FutoRules-V2.1/GENERAL/nrc-output.clp`.
 - Chains and subset prints otherwise follow generic notation.
 Examples
 - Ordered chain: `asc[3]: r2c1 < r2c2 < r2c3 < r2c4 ==> r2c4 ≠ 5`
@@ -154,7 +154,7 @@ Examples
 
 Kakuro
 - Sector/run messages during solve:
-  - “horizontal magic sector S‑in‑p, starting in rR cC” and “vertical sector with g‑digs S‑in‑p, starting in rR” while scanning runs and seeding g‑labels/combinations `KakuRules-V2.1/GENERAL/solve.clp:462`, `:1081`–`:1104`.
+  - “horizontal magic sector S‑in‑p, starting in rR cC” and “vertical sector with g‑digs S‑in‑p, starting in rR” while scanning runs and seeding g‑labels/combinations (`KakuRules-V2.1/GENERAL/solve.clp`).
 - g‑labels (combinations/digits) appear via sector templates; chain printing uses generic chain printers (cells shown as `{digit .}` or `{d1 d2}`), while many human‑readable diagnostics reference sums and sector coordinates. See `KakuRules-V2.1/GENERAL/glabels.clp` for g‑comb/g‑dig construction and `.../combinations.clp` for combination lists.
 Examples
 - Sector message: `horizontal magic sector 16-in-2, starting in r2 c4` (diagnostic while seeding sectors)
@@ -163,7 +163,7 @@ Examples
   Plain English: If r3c5 were 7, subsequent forced placements hit a dead end at r3c2; therefore r3c5 ≠ 7.
 
 Hidato / Numbrix
-- Values are plain integers laid on an `r/c` grid. Pretty/partial solution prints: `HidatoRules-V2.1/GENERAL/print-partial-sol.clp:34` (grids), and eliminations/assertions use the generic or app output of `rXcY ≠ n` / `rXcY = n`.
+- Values are plain integers laid on an `r/c` grid. Pretty/partial solution prints: `HidatoRules-V2.1/GENERAL/print-partial-sol.clp` (grids), and eliminations/assertions use the generic or app output of `rXcY ≠ n` / `rXcY = n`.
 - Additional notation is conceptual (distance/topology), not heavily encoded in chain lines; adjacency/distance is enforced in rules rather than shown as special glyphs.
 Examples
 - Chain: `whip[2]: r2c3 {7 9} - r2n7 {c1 c3} - r2c1 {7 .} ==> r2c3 ≠ 7`
@@ -172,9 +172,9 @@ Examples
   Plain English: 14 at r8c5 violates adjacency/distance rules given current values, so it’s removed.
 
 Slitherlink
-- Label format and value symbols include an edge type prefix: `H`, `V`, `I`, `P`, `B` followed by `r/c` coordinates; value names depend on type (e.g., degree/line presence). `print-label` `SlitherRules-V2.1/GENERAL/nrc-output.clp:16`.
-- Bivalue/final cells: `<Type rRcC> {v1 v2}` and `<Type rRcC> {v .}` `SlitherRules-V2.1/GENERAL/nrc-output.clp:28`, `:50`.
-- Eliminations: `<Type rRcC> ≠ <value>` `SlitherRules-V2.1/GENERAL/nrc-output.clp:80`.
+- Label format and value symbols include an edge type prefix: `H`, `V`, `I`, `P`, `B` followed by `r/c` coordinates; value names depend on type (e.g., degree/line presence). `print-label` (`SlitherRules-V2.1/GENERAL/nrc-output.clp`).
+- Bivalue/final cells: `<Type rRcC> {v1 v2}` and `<Type rRcC> {v .}` (`SlitherRules-V2.1/GENERAL/nrc-output.clp`).
+- Eliminations: `<Type rRcC> ≠ <value>` (`SlitherRules-V2.1/GENERAL/nrc-output.clp`).
 - Some family‑specific print lines (e.g., degree rules) include explicit type/value names in the message text under `GENERAL/S.clp`.
 Examples
 - Chain: `biv-chain[2]: V r2c3 {0 1} - V r5c3 {0 1} ==> V r2c3 ≠ 1`
@@ -183,9 +183,9 @@ Examples
   Plain English: The horizontal edge at (r3,c5) can’t be on without breaking Slitherlink constraints, so set it to 0.
 
 Map Colouring
-- Label format: `<Country><Colour>` (e.g., `C12 B`) with names resolved by `country-name`/`colour-name`: `MapRules-V2.1/GENERAL/output.clp:16`.
-- Bivalue/final cells: `Country {Colour1 Colour2}` and `Country {Colour .}` `MapRules-V2.1/GENERAL/output.clp:28`, `:40`.
-- Eliminations: `Country ≠ Colour` `MapRules-V2.1/GENERAL/output.clp:55`.
+- Label format: `<Country><Colour>` (e.g., `C12 B`) with names resolved by `country-name`/`colour-name`: `MapRules-V2.1/GENERAL/output.clp`.
+- Bivalue/final cells: `Country {Colour1 Colour2}` and `Country {Colour .}` (`MapRules-V2.1/GENERAL/output.clp`).
+- Eliminations: `Country ≠ Colour` (`MapRules-V2.1/GENERAL/output.clp`).
 - Neighbourhood constraints are implicit; if printed, they are described as “neighbour” in init‑links context (but not embedded in the label text).
 Examples
 - Chain: `biv-chain[3]: France {Blue Red} - Germany {Red Green} - Czechia {Green .} ==> France ≠ Red`

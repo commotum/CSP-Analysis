@@ -18,10 +18,10 @@
 - Chain rules and Singles then operate over a pure graph of binary links and glinks.
 
 Core machinery (generic)
-- `csp-variable`, `candidate`, `g-candidate` templates: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/templates.clp:79`
-- Mapping facts: `is-csp-variable-for-label (csp-var …) (label …)` produced per app and used by init‑links to assert `csp-linked` pairs: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/init-links.clp:78`
-- Application “link semantics”: `labels-linked-by`, `labels-linked` determine which label pairs are related by a typed variable vs any constraint: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/generic-background.clp:121`
-- Effective links creation: `init-links` asserts binary links and counts density: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/init-links.clp:49`
+- `csp-variable`, `candidate`, `g-candidate` templates: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/templates.clp`
+- Mapping facts: `is-csp-variable-for-label (csp-var …) (label …)` produced per app and used by init‑links to assert `csp-linked` pairs: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/init-links.clp`
+- Application “link semantics”: `labels-linked-by`, `labels-linked` determine which label pairs are related by a typed variable vs any constraint: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/generic-background.clp`
+- Effective links creation: `init-links` asserts binary links and counts density: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/init-links.clp`
 
 What “extra variables” buy you
 - Non‑binary constraints (AllDifferent, sum‑in‑run, adjacency, etc.) are “binaryized” as either:
@@ -34,50 +34,50 @@ What “extra variables” buy you
 
 Sudoku (SudoRules)
 - Extra variables: `rc`, `rn`, `cn`, `bn` map (row,col), (row,number), (col,number), (block,number).
-  - Constructors: `row-column-to-rc-variable`, `row-number-to-rn-variable`, `column-number-to-cn-variable`, `block-number-to-bn-variable`: `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/background.clp:235`, `:239`, `:243`, `:247`
-  - Type introspection: `csp-var-type` returns one of `rc/rn/cn/bn`: `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/background.clp:252`
+  - Constructors: `row-column-to-rc-variable`, `row-number-to-rn-variable`, `column-number-to-cn-variable`, `block-number-to-bn-variable`: `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/background.clp`
+  - Type introspection: `csp-var-type` returns one of `rc/rn/cn/bn`: `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/background.clp`
 - Binaryization
-  - `labels-linked-by` dispatches to `rc/rn/cn/bn` link tests; `labels-linked` ORs them: `CSP-Rules/CSP-Rules-V20.1/GENERAL/background.clp:407`, `:430`
-  - Generic `init-links` asserts `csp-linked` between labels sharing a typed variable; `exists-link` for application links: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/init-links.clp:78`, `:102`
+  - `labels-linked-by` dispatches to `rc/rn/cn/bn` link tests; `labels-linked` ORs them: `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/background.clp`
+  - Generic `init-links` asserts `csp-linked` between labels sharing a typed variable; `exists-link` for application links: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/init-links.clp`
 - Effect: AllDifferent over row/col/block and per‑cell exclusivity become pairwise `csp-linked` constraints; chains walk this graph.
 
 Latin Squares (+ Pandiagonals)
-- Same base variables: `rc/rn/cn` and optional diagonal variables `dn` (main) and `an` (anti). Constructors + type mapping: `CSP-Rules/CSP-Rules-V2.1/LatinRules-V2.1/GENERAL/background.clp:255`, `:259`, `:263`, `:269`, `:273`, `:281`
-- App overrides generic init‑links to assert both `csp-linked` and `exists-link` per typed family (including diagonals): `CSP-Rules/CSP-Rules-V2.1/LatinRules-V2.1/GENERAL/init-links.clp:74`, `:97`, `:121`, `:145`, `:169`
-- `labels-linked` includes diagonal constraints when `?*Pandiagonal*` is enabled: `CSP-Rules/CSP-Rules-V2.1/LatinRules-V2.1/GENERAL/background.clp:446`
+- Same base variables: `rc/rn/cn` and optional diagonal variables `dn` (main) and `an` (anti). Constructors + type mapping: `CSP-Rules/CSP-Rules-V2.1/LatinRules-V2.1/GENERAL/background.clp`
+- App overrides generic init‑links to assert both `csp-linked` and `exists-link` per typed family (including diagonals): `CSP-Rules/CSP-Rules-V2.1/LatinRules-V2.1/GENERAL/init-links.clp`
+- `labels-linked` includes diagonal constraints when `?*Pandiagonal*` is enabled: `CSP-Rules/CSP-Rules-V2.1/LatinRules-V2.1/GENERAL/background.clp`
 - Effect: AllDifferent over rows, cols, and optional diagonals are binaryized via typed csp variables.
 
 Futoshiki
-- Base variables: `rc/rn/cn` like Latin; constructors + type mapping: `CSP-Rules/CSP-Rules-V2.1/FutoRules-V2.1/GENERAL/background.clp:201`, `:205`, `:209`, `:215`
-- Non‑csp inequalities: inequality arcs are added as `labels-ineq-links` and folded into `labels-linked`: `CSP-Rules/CSP-Rules-V2.1/FutoRules-V2.1/GENERAL/background.clp:339`
+- Base variables: `rc/rn/cn` like Latin; constructors + type mapping: `CSP-Rules/CSP-Rules-V2.1/FutoRules-V2.1/GENERAL/background.clp`
+- Non‑csp inequalities: inequality arcs are added as `labels-ineq-links` and folded into `labels-linked`: `CSP-Rules/CSP-Rules-V2.1/FutoRules-V2.1/GENERAL/background.clp`
 - Effect: AllDifferent constraints are binaryized via `csp-linked`; the “<” constraints become direct `exists-link` relations, coexisting in the same link graph.
 
 Kakuro
 - Mixed modeling: white cell digits plus “sector” (run) constraints for sums.
-- Natural csp variables: per cell (`rc`) and per run/number (`rn`/`cn`) are created on the fly while scanning sectors; physical csp‑links asserted for both RC and RN constraints: `CSP-Rules/CSP-Rules-V2.1/KakuRules-V2.1/GENERAL/solve.clp:372`, `:390`, `:472`
-- Group modeling: sectors with admissible combinations/digits are represented via g‑labels; facts `is-csp-variable-for-glabel` and `physical-csp-glink` connect digits to sector constraints: `CSP-Rules/CSP-Rules-V2.1/KakuRules-V2.1/GENERAL/glabels.clp:80`, `:92`
+- Natural csp variables: per cell (`rc`) and per run/number (`rn`/`cn`) are created on the fly while scanning sectors; physical csp‑links asserted for both RC and RN constraints: `CSP-Rules/CSP-Rules-V2.1/KakuRules-V2.1/GENERAL/solve.clp`
+- Group modeling: sectors with admissible combinations/digits are represented via g‑labels; facts `is-csp-variable-for-glabel` and `physical-csp-glink` connect digits to sector constraints: `CSP-Rules/CSP-Rules-V2.1/KakuRules-V2.1/GENERAL/glabels.clp`
 - Binaryization
   - For each run, labels sharing the same run‑typed CSP variable get `csp-linked` (mutual exclusion).
   - Sum feasibility is propagated via glinks between cell labels and sector g‑labels; chain rules traverse `exists-glink` and `exists-link` edges.
 - Effect: Global sum constraints reduce to pairwise links plus membership links to sector g‑labels that encode allowed sets.
 
 Map Colouring
-- Extra variable: one CSP variable per country (exactly one colour), constructor is identity: `country-to-csp-variable`: `CSP-Rules/CSP-Rules-V2.1/MapRules-V2.1/GENERAL/background.clp:87`
+- Extra variable: one CSP variable per country (exactly one colour), constructor is identity: `country-to-csp-variable`: `CSP-Rules/CSP-Rules-V2.1/MapRules-V2.1/GENERAL/background.clp`
 - Binaryization
-  - For a country, all (country,colour) labels are pairwise `csp-linked`: `CSP-Rules/CSP-Rules-V2.1/MapRules-V2.1/GENERAL/init-links.clp:24`
-  - Neighbour constraints become non‑csp links between same‑colour labels of adjacent countries: `CSP-Rules/CSP-Rules-V2.1/MapRules-V2.1/GENERAL/init-links.clp:38`
+  - For a country, all (country,colour) labels are pairwise `csp-linked`: `CSP-Rules/CSP-Rules-V2.1/MapRules-V2.1/GENERAL/init-links.clp`
+  - Neighbour constraints become non‑csp links between same‑colour labels of adjacent countries: `CSP-Rules/CSP-Rules-V2.1/MapRules-V2.1/GENERAL/init-links.clp`
 - Effect: “one colour per country” is a CSP variable; “neighbours differ” is pairwise excluded by `exists-link`.
 
 Hidato / Numbrix
-- Extra variables: `Xrc` (per cell) and `Xn` (per number); type test distinguishes them: `CSP-Rules/CSP-Rules-V2.1/HidatoRules-V2.1/GENERAL/background.clp:125`
+- Extra variables: `Xrc` (per cell) and `Xn` (per number); type test distinguishes them: `CSP-Rules/CSP-Rules-V2.1/HidatoRules-V2.1/GENERAL/background.clp`
 - Binaryization
-  - `nrc-linked` implements per‑cell exclusivity and per‑number uniqueness; adjacency/distance feasibility is added as non‑csp links (`distant-linked`): `CSP-Rules/CSP-Rules-V2.1/HidatoRules-V2.1/GENERAL/background.clp:201`
+  - `nrc-linked` implements per‑cell exclusivity and per‑number uniqueness; adjacency/distance feasibility is added as non‑csp links (`distant-linked`): `CSP-Rules/CSP-Rules-V2.1/HidatoRules-V2.1/GENERAL/background.clp`
 - Effect: “each number in one cell” and “each cell has one number” are CSP variables; path adjacency is pairwise constraints combining topology or geometry.
 
 Slitherlink
-- Typed CSP variables for several structural families (edges, numbers, intersections…): stored by attaching a `csp-var-type` to `is-csp-variable-for-label`: `CSP-Rules/CSP-Rules-V2.1/SlitherRules-V2.1/GENERAL/templates.clp:50`, `CSP-Rules/CSP-Rules-V2.1/SlitherRules-V2.1/GENERAL/S.clp:61`
+- Typed CSP variables for several structural families (edges, numbers, intersections…): stored by attaching a `csp-var-type` to `is-csp-variable-for-label`: `CSP-Rules/CSP-Rules-V2.1/SlitherRules-V2.1/GENERAL/templates.clp`, `CSP-Rules/CSP-Rules-V2.1/SlitherRules-V2.1/GENERAL/S.clp`
 - Binaryization uses precomputed “physical” links
-  - `physical-csp-link` and `physical-link` are materialised first; `init-links` turns them into `csp-linked` and `exists-link`: `CSP-Rules/CSP-Rules-V2.1/SlitherRules-V2.1/GENERAL/init-links.clp:26`, `:45`
+  - `physical-csp-link` and `physical-link` are materialised first; `init-links` turns them into `csp-linked` and `exists-link`: `CSP-Rules/CSP-Rules-V2.1/SlitherRules-V2.1/GENERAL/init-links.clp`
 - Effect: local loop/degree constraints are encoded via typed CSP variables; the loop structure is enforced by pairwise links among typed candidates.
 
 Similarities vs Differences
@@ -92,7 +92,7 @@ Similarities vs Differences
 **API Surface You’ll See In Code**
 - Map labels to typed CSP variables: `is-csp-variable-for-label …` facts (per app); used everywhere to bind labels to variables.
 - Typed tests: `csp-var-type` returns symbols used in `labels-linked-by` dispatch.
-- Init phase (generic or app‑specific) creates links: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/init-links.clp:49`; app overrides when more efficient or when non‑csp relations are needed (e.g., Latin’s diagonals, Map’s neighbours).
+- Init phase (generic or app‑specific) creates links: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/init-links.clp`; app overrides when more efficient or when non‑csp relations are needed (e.g., Latin’s diagonals, Map’s neighbours).
 - Optional grouped layer: g‑labels (`g-candidate`), `is-csp-variable-for-glabel`, and glinks connect labels to grouped constraints (Kakuro sectors; Sudoku segments for g‑chains).
 
 **Why This Works (Conceptually)**
@@ -116,11 +116,11 @@ Similarities vs Differences
 - Optionally introduce g‑labels if “group membership” helps (sectors/combinations) and assert `is-csp-variable-for-glabel` and glinks.
 
 **Quick File Index**
-- Generic init‑links and background helpers: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/init-links.clp:49`, `.../generic-background.clp:210`
-- Sudoku typed vars + links: `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/background.clp:235`, `:407`, `:430`
-- Latin typed vars (+ diagonals) + init‑links: `CSP-Rules/CSP-Rules-V2.1/LatinRules-V2.1/GENERAL/background.clp:255`, `.../init-links.clp:74`
-- Futoshiki inequalities in links: `CSP-Rules/CSP-Rules-V2.1/FutoRules-V2.1/GENERAL/background.clp:339`
-- Kakuro sectors + physical links: `CSP-Rules/CSP-Rules-V2.1/KakuRules-V2.1/GENERAL/solve.clp:372`, `CSP-Rules/CSP-Rules-V2.1/KakuRules-V2.1/GENERAL/glabels.clp:80`
-- Map neighbours + country variables: `CSP-Rules/CSP-Rules-V2.1/MapRules-V2.1/GENERAL/init-links.clp:24`
-- Hidato/Numbrix distance model: `CSP-Rules/CSP-Rules-V2.1/HidatoRules-V2.1/GENERAL/background.clp:201`
-- Slither physical links + typed mapping: `CSP-Rules/CSP-Rules-V2.1/SlitherRules-V2.1/GENERAL/init-links.clp:26`, `.../GENERAL/S.clp:61`
+- Generic init‑links and background helpers: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/init-links.clp`, `.../generic-background.clp`
+- Sudoku typed vars + links: `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/background.clp`
+- Latin typed vars (+ diagonals) + init‑links: `CSP-Rules/CSP-Rules-V2.1/LatinRules-V2.1/GENERAL/background.clp`, `.../init-links.clp`
+- Futoshiki inequalities in links: `CSP-Rules/CSP-Rules-V2.1/FutoRules-V2.1/GENERAL/background.clp`
+- Kakuro sectors + physical links: `CSP-Rules/CSP-Rules-V2.1/KakuRules-V2.1/GENERAL/solve.clp`, `CSP-Rules/CSP-Rules-V2.1/KakuRules-V2.1/GENERAL/glabels.clp`
+- Map neighbours + country variables: `CSP-Rules/CSP-Rules-V2.1/MapRules-V2.1/GENERAL/init-links.clp`
+- Hidato/Numbrix distance model: `CSP-Rules/CSP-Rules-V2.1/HidatoRules-V2.1/GENERAL/background.clp`
+- Slither physical links + typed mapping: `CSP-Rules/CSP-Rules-V2.1/SlitherRules-V2.1/GENERAL/init-links.clp`, `.../GENERAL/S.clp`
