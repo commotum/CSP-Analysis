@@ -152,3 +152,4 @@
 - Scope warnings: The neighbor derivations shown under Step 4 are Sudoku/Latin‑like. For other apps, derive neighbors from the app’s typed variables or relational definitions (inequalities, adjacency lists, g‑structures).
 - Chains need typed gates: compute “strong” availability from the corresponding typed variable counts (e.g., count==2), then restrict parity expansions accordingly.
 
+
