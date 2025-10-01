@@ -127,3 +127,10 @@
 - Salience setup: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/saliences.clp:448`
 - Chain families: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/CHAIN-RULES-SPEED:1`, `.../MEMORY:1`, `.../EXOTIC:1`
 
+**See Also**
+- Overview: architecture, run order — [Overview](Overview.md)
+- State: working memory + globals — [State](State.md)
+- Pattern taxonomy: how rules read as Scope → Trigger → Action — [Trigger](Trigger.md)
+- Output notation: how chains print — [Notation](Notation.md)
+- Non‑binary → binary across apps — [Beyond](Beyond.md)
+- Trial & Error and DFS — [T&E](T&E.md)

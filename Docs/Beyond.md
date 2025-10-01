@@ -88,6 +88,14 @@ Similarities vs Differences
 - Post‑processing adds pairwise relational links for constraints that are not “exactly‑one” (inequality, mutual exclusion across entities, adjacency).
 - Once reduced to a labelled graph with binary edges, the same chain/whip/braid machinery applies across domains.
 
+**See Also**
+- Overview: high‑level architecture — [Overview](Overview.md)
+- Model: labels, typed variables, links — [Model](Model.md)
+- Pattern taxonomy: where these links are used — [Trigger](Trigger.md)
+- Output notation: how typed cells look — [Notation](Notation.md)
+- State: facts and link caches — [State](State.md)
+- T&E / DFS: contradictions over csp‑variables — [T&E](T&E.md)
+
 **Design Checklist For New Constraints**
 - Identify the global constraint families and choose typed variables (names and encoding) to decompose them.
 - Define constructors and `csp-var-type` so `labels-linked-by` can dispatch.
@@ -104,4 +112,3 @@ Similarities vs Differences
 - Map neighbours + country variables: `CSP-Rules/CSP-Rules-V2.1/MapRules-V2.1/GENERAL/init-links.clp:24`
 - Hidato/Numbrix distance model: `CSP-Rules/CSP-Rules-V2.1/HidatoRules-V2.1/GENERAL/background.clp:201`
 - Slither physical links + typed mapping: `CSP-Rules/CSP-Rules-V2.1/SlitherRules-V2.1/GENERAL/init-links.clp:26`, `.../GENERAL/S.clp:61`
-

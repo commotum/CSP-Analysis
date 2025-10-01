@@ -100,3 +100,10 @@ Key points about globals
 - If you need group membership, define `g-candidate`s and `is-csp-variable-for-glabel` and seed glinks in `GENERAL/init-glinks.clp`.
 - Register any extra caches or counters in your app’s `GENERAL/globals.clp` and reset them in `init-specific-globals`.
 
+**See Also**
+- Model: objects and API surface — [Model](Model.md)
+- Overview: load order and modules — [Overview](Overview.md)
+- Pattern taxonomy: where facts are matched — [Trigger](Trigger.md)
+- Output notation: reading state in traces — [Notation](Notation.md)
+- T&E / DFS: how state is copied/cleaned in contexts — [T&E](T&E.md)
+- Non‑binary → binary modeling — [Beyond](Beyond.md)

@@ -75,3 +75,10 @@ How each is used by T&E
 - Forcing T&E: `.../Forcing2-TE.clp` (pair compare), `.../ORk-Forcing-TE.clp`.
 - Flags and prints: `CSP-Rules-Generic/GENERAL/globals.clp` (T&E/DFS toggles at ~:753–:775; prints at :1801+).
 
+**See Also**
+- State: how facts/globals are copied or recomputed in child contexts — [State](State.md)
+- Model: object vocabulary for reading T&E rules — [Model](Model.md)
+- Overview: load order and where T&E is hooked — [Overview](Overview.md)
+- Trigger: pattern families that run inside T&E contexts — [Trigger](Trigger.md)
+- Notation: reading T&E/DFS prints and implications — [Notation](Notation.md)
+- Beyond: contradictions over csp‑variables — [Beyond](Beyond.md)

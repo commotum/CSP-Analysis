@@ -128,3 +128,11 @@ Execution pipeline and gating
 - Futoshiki Inequalities — row/col | inequality arcs + AllDifferent | prune by order constraints | FutoRules-V2.1/GENERAL/background.clp:318, :339
 - Map Neighbourhood — countries | same‑colour on adjacent countries | eliminate same‑colour neighbours | MapRules-V2.1/GENERAL/init-links.clp:38
 - Slitherlink Degree/Loop — edges/vertices | degree/loop constraints per type | prune edge states | SlitherRules-V2.1/GENERAL/S.clp:61, init-links.clp:60
+
+**See Also**
+- Overview: how families load — [Overview](Overview.md)
+- Model: chain objects and typed chains — [Model](Model.md)
+- State: facts matched by rules — [State](State.md)
+- Notation: reading chain and subset lines — [Notation](Notation.md)
+- Beyond: the link model that chains traverse — [Beyond](Beyond.md)
+- T&E / DFS: control strategies around the same rules — [T&E](T&E.md)

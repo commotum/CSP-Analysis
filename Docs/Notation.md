@@ -184,3 +184,11 @@ Futoshiki — 9x9‑Extreme‑SHT (CSP-Rules-Examples/Futoshiki/Tatham/9x9-Extre
   Plain English: In row 4, only c2 can take 9; set it.
 - `naked-single ==> r9c5 = 4`
   Plain English: Cell r9c5 is forced to 4 by previous eliminations.
+
+**See Also**
+- Trigger: taxonomy of patterns that generate these lines — [Trigger](Trigger.md)
+- Model: how labels/cells are formed — [Model](Model.md)
+- Overview: where print helpers live — [Overview](Overview.md)
+- State: counters and density printed around traces — [State](State.md)
+- Beyond: how typed variables affect printed cells — [Beyond](Beyond.md)
+- T&E: how hypotheses appear in logs — [T&E](T&E.md)

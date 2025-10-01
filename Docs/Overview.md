@@ -171,6 +171,14 @@ Preferences — Alternative technique selection via `solve-w-preferences` (CSP�
 
 Rating Types — Derived from generic and app settings (`CSP-Rules-Generic/GENERAL/globals.clp:1510`–:1512).
 
+**See Also**
+- Model: conceptual API and objects — [Model](Model.md)
+- State: facts + globals and lifecycle — [State](State.md)
+- Pattern taxonomy: Scope → Trigger → Action — [Trigger](Trigger.md)
+- Notation and real traces — [Notation](Notation.md)
+- Non‑binary → binary modeling — [Beyond](Beyond.md)
+- Trial & Error and DFS — [T&E](T&E.md)
+
 **Schema & Flow**
 ```
 Inputs                          Load & Setup                        Core Facts & Links                 Solve Phases                     Effects / Output
