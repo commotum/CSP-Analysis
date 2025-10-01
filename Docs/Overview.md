@@ -20,6 +20,8 @@
 - CSP-Rules is a pattern-based (rule-based) solver for finite binary CSPs implemented in CLIPS; an application layer (e.g., Sudoku) extends generic templates and rules.
 - This document summarizes architecture (generic core → app modules), shows where to look for data/state models and loaders, and captures usage patterns directly from the examples (no execution required).
 
+Reading order (recommended): Overview → Notation → Model → State → Trigger → Beyond → T&E. Reason: learn to read traces first, then build mental models and layer in taxonomy and app‑specific details.
+
 <a id="architecture"></a>
 **Architecture At A Glance**
 - Generic Core
@@ -48,7 +50,7 @@
 - `CSP-Rules-Examples/`
   - Example `.clp` files and large‑scale studies for each app (usage patterns, toggles, ratings and timings in comments).
 - Root
-  - `overview.md` — This analysis and guide. `README.md` — Workspace readme.
+  - `Docs/Overview.md` — This analysis and guide. `README.md` — Workspace readme.
 
 <a id="usage"></a>
 **Examples‑First Usage Cheat‑Sheet (No‑Run)**
@@ -68,15 +70,16 @@
   - Whips/Braids and lengths: `CSP-Rules-Examples/README.md:168`–`:181`; controlled-bias study toggles under `CSP-Rules-Examples/Sudoku-b/cbg-000/launch.txt:23`–`:65`.
   - `solve-w-preferences` is available generically and used in some Sudoku examples: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/MODULES/modules.clp:98`, `CSP-Rules-Examples/README.md:99`, `:156`.
 - Important Path Note (for later execution)
-  - The Sudoku config currently points `?*CSP-Rules*` to `/home/jake/Developer/CSP-Rules/` (`CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1-config.clp:49`). If running within this workspace, either keep using your external install or update this path to this workspace’s `CSP-Rules/` absolute path.
+  - The default `?*CSP-Rules*` in `SudoRules-V20.1-config.clp:49` points to a maintainer’s path (e.g., `/Users/berthier/Projects/CSP-Rules/`). If running locally, set this to your absolute CSP‑Rules install path (or continue using your external install if you have one).
 
 <a id="read-first"></a>
 **What To Read First**
-- Core concept overview and supported apps: `CSP-Rules/CSP-Rules-V2.1/README.md`.
-- Change history and features: `CSP-Rules/CSP-Rules-V2.1/UPDATES.md`.
-- Generic data contracts and runtime knobs: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/templates.clp`, `.../globals.clp`.
-- Sudoku app structure and public API: `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/*.clp` (especially `solve.clp`, `background.clp`, `templates.clp`).
-- Examples’ README for curated guidance by technique: `CSP-Rules-Examples/README.md`.
+- Read in this order: Overview → Notation → Model → State → Trigger → Beyond → T&E
+- Code orientation (optional, as needed):
+  - CSP‑Rules readme and updates: `CSP-Rules/CSP-Rules-V2.1/README.md`, `UPDATES.md`.
+  - Generic data contracts and knobs: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/templates.clp`, `.../globals.clp`.
+  - Sudoku app structure and public API: `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/*.clp` (especially `solve.clp`, `background.clp`, `templates.clp`).
+  - Examples’ README for curated guidance by technique: `CSP-Rules-Examples/README.md`.
 
 <a id="data"></a>
 **Data & State Model**

@@ -17,14 +17,14 @@ State = facts in working memory + globals. Facts capture the live problem (candi
 <a id="facts"></a>
 **Facts (Working Memory)**
 - Core candidates
-  - `candidate` — per placement, with `status` `cand` or `c-value`, plus `context` and `flag` (T&E). Generic template: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/templates.clp:49`. Apps extend with structural slots (e.g., Sudoku adds `number/row/column/block` in `SudoRules-V20.1/GENERAL/templates.clp:22`).
-  - `g-candidate` — grouped labels for g‑chains; has `type` and optional `csp-var`: `CSP-Rules-Generic/GENERAL/templates.clp:83` (generic), app variants (e.g., Sudoku `SudoRules-V20.1/GENERAL/templates.clp:41`).
+  - `candidate` — per placement, with `status` `cand` or `c-value`, plus `context` and `flag` (T&E). Generic template: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/templates.clp:79`. Apps extend with structural slots (e.g., Sudoku adds `number/row/column/block` in `SudoRules-V20.1/GENERAL/templates.clp:22`).
+  - `g-candidate` — grouped labels for g‑chains; has `type` and optional `csp-var`: `CSP-Rules-Generic/GENERAL/templates.clp:101` (generic), app variants (e.g., Sudoku `SudoRules-V20.1/GENERAL/templates.clp:41`).
 
 - Structural model
   - `csp-variable` — one per typed “slot” (e.g., Sudoku `rc/rn/cn/bn`): created per app; used to detect contradictions: “no label left for a csp-variable”.
   - Label↔variable relations:
-    - `is-csp-variable-for-label` and `is-csp-variable-for-glabel`: `CSP-Rules-Generic/GENERAL/templates.clp:128`, `:144`.
-    - Typed variants for typed chains: `is-typed-csp-variable-for-label/glabel`: `CSP-Rules-Generic/GENERAL/templates.clp:152`, `:160`.
+    - `is-csp-variable-for-label` and `is-csp-variable-for-glabel`: `CSP-Rules-Generic/GENERAL/templates.clp:131`, `:139`.
+    - Typed variants for typed chains: `is-typed-csp-variable-for-label/glabel`: `CSP-Rules-Generic/GENERAL/templates.clp:147`, `:157`.
 
 - Links (binary graph edges over labels)
   - Effective edges asserted at init per context:
@@ -34,15 +34,15 @@ State = facts in working memory + globals. Facts capture the live problem (candi
   - Some apps seed “physical” edges first, then init‑links derives effective edges (e.g., Map `physical-link`: `MapRules-V2.1/GENERAL/init-links.clp:24`; Slither `physical-csp-link/physical-link`: `SlitherRules-V2.1/GENERAL/init-links.clp:33`).
 
 - Contexts (for T&E/DFS)
-  - `context (name, parent, depth, generating-cand…)`: `CSP-Rules-Generic/GENERAL/templates.clp:266`.
+  - `context (name, parent, depth, generating-cand…)`: `CSP-Rules-Generic/GENERAL/templates.clp:256`.
   - Orchestration helpers: `technique` (phase marker), `phase`, `phase-productive-in-context`, `clean-and-retract` (created/consumed by T&E rules in `CSP-Rules-Generic/T&E+DFS/*`).
 
 - Chains and patterns (derived reasoning state)
-  - `chain`, `typed-chain`, `csp-chain`, `chain2r`, `ORk-chain`, `ORk-relation`: `CSP-Rules-Generic/GENERAL/templates.clp:292`, `:312`, `:330`, `:356`, `:392`, `:433`.
+  - `chain`, `typed-chain`, `csp-chain`, `chain2r`, `ORk-chain`, `ORk-relation`: `CSP-Rules-Generic/GENERAL/templates.clp:284`, `:305`, `:328`, `:355`, `:448`, `:427`.
   - These are asserted/transient while rules fire; they carry the sequence (llcs/rlcs/csp-vars) and are context‑scoped via `context` slot.
 
 - Focus/utility
-  - `candidate-in-focus` for narrowing search/printing (optional): `CSP-Rules-Generic/GENERAL/templates.clp:176`.
+  - `candidate-in-focus` for narrowing search/printing (optional): `CSP-Rules-Generic/GENERAL/templates.clp:237`.
   - App‑specific helpers (e.g., Kakuro `sector-with-gcombs`), not core to state.
 
 Key points about facts

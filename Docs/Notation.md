@@ -1,5 +1,7 @@
 ## Contents
 - [Where Output Lives](#where)
+- [Quick Start](#quickstart)
+- [Quick Excerpts](#quickexcerpts)
 - [Core Symbols](#symbols)
 - [Labels and Cells](#labels)
 - [Chain Line Anatomy](#chains)
@@ -23,6 +25,22 @@ This guide explains how CSP‑Rules formats its console output when verbosity is
   - Sudoku NRC format (labels, pairs, csp‑var names): `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/nrc-output.clp:1`
   - Latin Squares pretty grid output: `CSP-Rules/CSP-Rules-V2.1/LatinRules-V2.1/GENERAL/pretty-print.clp:86`
   - Sudoku partial solution printing, summaries: `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/print-partial-sol.clp:34`, `.../record-results.clp:1`
+
+<a id="quickstart"></a>
+**Quick Start (Read Chains In 30 Seconds)**
+- Look for the header: technique + length, e.g., `whip[5]:` or `biv-chain[3]:`.
+- Read each cell as a CSP‑variable context with two values: `{val1 val2}`; links are shown with ` - `.
+- For non‑reversible families (whips/braids), the final cell prints `{val .}` to mark the missing right candidate.
+- The implication shows the conclusion: ` ==> not <label>` (elimination) or ` ==> assert <label>` (forcing).
+- One printed line = one linear derivation (single stream of reasoning); ORk families show side branches but still yield a single conclusion.
+
+<a id="quickexcerpts"></a>
+**Quick Excerpts**
+- Sudoku — Metcalf‑B7B
+  - `whip[5]: r6n3{c1 c5} - r4n3{c5 c8} - c8n5{r4 r3} - r2n5{c7 c6} - r2n3{c6 .} ==> r5c1 ≠ 3`
+- Map Colouring — Tatham30
+  - `biv-chain[3]: France {Blue Red} - Germany {Red Green} - Czechia {Green .} ==> France ≠ Red`
+See more in End‑to‑End Excerpts below.
 
 <a id="symbols"></a>
 **Core Symbols (Generic Defaults)**

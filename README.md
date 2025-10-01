@@ -5,13 +5,12 @@ This workspace collects analysis and guides for understanding CSP‑Rules and it
 ## Docs — Start Here
 
 - [Overview](Docs/Overview.md) — Architecture at a glance, directory map, how to load and use modules.
+- [Notation](Docs/Notation.md) — How to read output quickly (chains, whips, braids) and real excerpts.
 - [Model](Docs/Model.md) — Mental model and public API: variables, labels, links, chains.
 - [State](Docs/State.md) — What “state” means: facts (candidates, csp‑vars, links) + globals (toggles, counters, caches).
-- [Beyond (Non‑binary → Binary)](Docs/Beyond.md) — How extra typed variables binaryize global constraints in each app.
 - [Trigger (Pattern Taxonomy)](Docs/Trigger.md) — Scope → Trigger → Action mental model and a taxonomy of pattern families.
-- [Notation](Docs/Notation.md) — What the console output means (chains, whips, braids), per‑game notation, and real excerpts.
+- [Beyond (Non‑binary → Binary)](Docs/Beyond.md) — How extra typed variables binaryize global constraints in each app.
 - [T&E / DFS](Docs/T&E.md) — Trial & Error and Depth‑First Search: contexts, contradiction detection, and integration with rules.
-- [Itinerary](Docs/Itinerary.md) — Research/checklist placeholder (optional roadmap).
 
 ## Repos In Workspace
 
@@ -25,4 +24,4 @@ Shortcuts (browse code):
 - Generic init‑links: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/init-links.clp`
 - Sudoku NRC output: `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/nrc-output.clp`
 
-If you’re new, begin with Overview, then Model and State, and use Trigger + Notation as your quick references while reading traces. Consult Beyond when you need to understand how an app encodes its global constraints, and T&E for branching mechanics.
+If you’re new, begin with Overview, then Notation (to decode trace lines fast), followed by Model and State. Use Trigger as your taxonomy reference, consult Beyond when you need app‑specific binaryization details, and use T&E for branching mechanics. This order optimizes for quick comprehension of solver output before diving into internals.
