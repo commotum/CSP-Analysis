@@ -216,26 +216,32 @@ Rating Types — Derived from generic and app settings (`CSP-Rules-Generic/GENER
 
 <a id="schema"></a>
 **Schema & Flow**
-```
-Inputs                          Load & Setup                        Core Facts & Links                 Solve Phases                     Effects / Output
-------                          -------------                       ------------------                 -----------                      ----------------
-String/List/Grid/File  ->  Config (`*-config.clp`)  ->  Generic Loader  ->  App Loader  ->  Initial Facts
-                            - sets `?*CSP-Rules*`        (`CSP-Rules-Generic-Loader.clp`)   (csp-variable, candidate, g-candidate)
-                            - computes dirs              batches app loader                 + Labels per app (e.g., rc/rn/cn/bn)
-                            - loads generic/app globals  (`SudoRules-Loader.clp` etc.)
+- Inputs → Config
+  - Puzzle source: string, list, grid, or file
+  - App config `*-config.clp` sets `?*CSP-Rules*`, computes directories, selects loaders/techniques (example: `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1-config.clp`).
 
-Initial Facts  ->  init-links (generic)  ->  Links/Glinks asserted  ->  Density/Counts
-                   `CSP-Rules-Generic/GENERAL/init-links.clp`        (based on app `labels-linked*`)    (printed if enabled)
+- Load & Setup
+  - Generic loader batches generic modules then the app loader: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/CSP-Rules-Generic-Loader.clp` → app loader (e.g., `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/SudoRules-Loader.clp`).
+  - Initialises globals (toggles, counters, prints): `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/globals.clp` (plus app globals).
 
-Then:
-  BRT: Singles + ECP        Chains/Subsets/Uniqueness/Exotic          Optional T&E/DFS
-  - `ECP.clp`, NS/HS        - `CHAIN-RULES-*` (+ app dirs)            - `T&E+DFS/*`
-  - app `NS.clp`, `HS.clp`
+- Initial Facts
+  - Assert core templates: `csp-variable`, `candidate`, `g-candidate` from `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/templates.clp` (app extensions: `.../GENERAL/templates.clp`).
+  - App labels/typed variables (e.g., Sudoku `rc/rn/cn/bn`) defined in app background/templates (e.g., `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/templates.clp`).
 
-Loop until solved / contradiction / limits:
-  - Rule firings eliminate candidates or assert values (c-values)
-  - Stats/trace printed per `?*print-*` globals
-```
+- Links (Generic Init)
+  - Build `csp-linked`/`exists-link` from app `labels-linked*` via `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/init-links.clp` (app link semantics in `.../GENERAL/background.clp`).
+  - If g‑labels are enabled, build glinks via `.../GENERAL/init-glinks.clp` (generic/app variants).
+  - Optional metrics (counts/density) printed if enabled (`?*print-*` in `.../GENERAL/globals.clp`).
+
+- Solve Phases
+  - BRT (Singles + ECP): `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/ECP.clp`, `.../GENERAL/Single.clp`; app NS/HS: `CSP-Rules/CSP-Rules-V2.1/SudoRules-V20.1/GENERAL/NS.clp`, `.../HS.clp`.
+  - Chains/Subsets/Uniqueness/Exotic (as configured): `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/CHAIN-RULES-*/*` and app `SUBSETS/`, `UNIQUENESS/`, `EXOTIC/`.
+  - Optional T&E/DFS: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/T&E+DFS/*` (same rules run inside child contexts; DFS pursues a branch to solution/contradiction).
+  - Rule order via salience: `CSP-Rules/CSP-Rules-V2.1/CSP-Rules-Generic/GENERAL/saliences.clp` (and app saliences).
+
+- Loop & Termination
+  - Iterate phases until fixpoint, solution, contradiction, or limits (time/step caps). Rule firings retract candidates or assert `c-value`s.
+  - Traces/stats controlled by `?*print-*` in `.../GENERAL/globals.clp`.
 
 Key refs: generic templates `CSP-Rules-Generic/GENERAL/templates.clp`, Sudoku background `SudoRules-V20.1/GENERAL/background.clp`, init-links `CSP-Rules-Generic/GENERAL/init-links.clp`, saliences `.../GENERAL/saliences.clp`.
 
